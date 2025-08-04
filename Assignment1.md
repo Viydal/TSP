@@ -2,8 +2,8 @@ TSP Class
 Local Seach: Jump
 Local Search: Exchange
 Local Search: 2-opt neightborhoods
-Construct EVP Individual Class
-EVP: insert
+Construct EVP Individual Class - Bryce
+EVP: insert - Bryce
 EVP: swap
 EVP: inversion
 EVP: Order Crossover
