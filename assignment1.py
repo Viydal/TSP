@@ -18,6 +18,7 @@ class agent:
 class TSP:
     agents: [int]
     def __init__(self,filename: str):
+        self.agents = []
         self.open(filename)
         pass
     def open(self,filename):
@@ -31,10 +32,12 @@ class TSP:
         while line[0:18] != "NODE_COORD_SECTION":
             line = f.readline()
         print(line.strip())
+        line = f.readline().strip()
         while line[0:3] != "EOF":
-            line = f.readline().strip()
+            dprint(line)
             ex, x, y = line.split()
             self.agents.append(agent(Point(x,y)))
+            line = f.readline().strip()
         print(f.readline().strip())
 
 #travel = TSP("st70.tsp")
