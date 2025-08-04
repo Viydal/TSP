@@ -9,16 +9,16 @@ class Point:
         self.y = y
 
 
-class agent:
+class City:
     point: Point
     def __init__(self,point: Point):
         self.point = point
 
 
 class TSP:
-    agents: [int]
+    Cities: ['City']
     def __init__(self,filename: str):
-        self.agents = []
+        self.Cities = []
         self.open(filename)
         pass
     def open(self,filename):
@@ -36,7 +36,7 @@ class TSP:
         while line[0:3] != "EOF":
             dprint(line)
             ex, x, y = line.split()
-            self.agents.append(agent(Point(x,y)))
+            self.Cities.append(City(Point(x,y)))
             line = f.readline().strip()
         print(f.readline().strip())
 
