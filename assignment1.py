@@ -70,6 +70,17 @@ class TSP:
     def run(self):
         pass
 
+# This exchanges two cities/points in the citie list/array
+
+# Tutor said keep it min to just 2 points for simplicity
+def exchange(cities:['City'], i: int, j: int):
+    #Checks within bounds of the 
+    if i < 0 or i >= len(cities) or j < 0 or j >= len(cities):
+        raise IndexError("Index out of bounds")
+    #edge case where they input same index
+    if i == j:
+        return
+    cities[i], cities[j] = cities[j], cities[i]
 
 #travl = TSP("st70.tsp")
 travl = TSP("eil101.tsp")
