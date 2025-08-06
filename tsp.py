@@ -82,9 +82,28 @@ class TSP:
     def run(self):
         pass
 
+    # Tutor said keep it min to just 2 points for simplicity
+    def exchange(cities:['City'], i: int, j: int):
+        #Checks within bounds of the path
+        if i < 0 or i >= len(cities) or j < 0 or j >= len(cities):
+            raise IndexError("Index out of bounds")
+        #Edge case where they input same index
+        if i == j:
+            return
+        cities[i], cities[j] = cities[j], cities[i]
 
-if __name__ == "__main__":
-    # travel = TSP("st70.tsp")
-    travel = TSP("eil101.tsp")
-    travel.path = travel.randomPath()
-    print(travel.pathCost())
+    # Implement local search using the exchange function
+    def localSearch(cities:['City']):
+        improved = True
+        while improved:
+            improved = False
+            for i in range(len(cities)):
+                for j in range(i + 1, len(cities)):
+                    # Swap cities i and j
+                    exchange(cities, i, j)
+                    # Check if the new path is better
+                    if TSP.pathCost(cities) < TSP.pathCost():
+                        improved = True
+                    else:
+                        # Swap back if not better
+                        exchange(cities, i, j)
