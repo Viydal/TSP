@@ -15,7 +15,7 @@ class Point:
         self.y = y
 
     def distance(self, other):
-        return math.sqrt(math.pow(self.x-other.x, 2)+math.pow(self.y-other.y, 2))
+        return math.sqrt(math.pow(self.x - other.x, 2) + math.pow(self.y - other.y, 2))
 
     def print(self):
         print(self.x, self.y)
@@ -32,8 +32,8 @@ class City:
 
 
 class TSP:
-    Cities: ['City']
-    path: ['City']
+    Cities: ["City"]
+    path: ["City"]
 
     def __init__(self, filename: str):
         self.Cities = []
@@ -67,8 +67,8 @@ class TSP:
         if path is None:
             path = self.path
         cost = 0
-        for i in range(len(path)-1):
-            cost += path[i].point.distance(path[i+1].point)
+        for i in range(len(path) - 1):
+            cost += path[i].point.distance(path[i + 1].point)
         cost += path[-1].point.distance(path[0].point)
         return cost
 
@@ -76,24 +76,26 @@ class TSP:
         cities = self.Cities.copy()
         path = []
         for i in range(len(cities)):
-            path.append(cities.pop(random.randint(0, len(cities)-1)))
+            path.append(cities.pop(random.randint(0, len(cities) - 1)))
         return path
 
     def run(self):
         pass
 
+
+class localSearch:
     # Tutor said keep it min to just 2 points for simplicity
-    def exchange(cities:['City'], i: int, j: int):
-        #Checks within bounds of the path
+    def exchange(cities: ["City"], i: int, j: int):
+        # Checks within bounds of the path
         if i < 0 or i >= len(cities) or j < 0 or j >= len(cities):
             raise IndexError("Index out of bounds")
-        #Edge case where they input same index
+        # Edge case where they input same index
         if i == j:
             return
         cities[i], cities[j] = cities[j], cities[i]
 
     # Implement local search using the exchange function
-    def localSearch(cities:['City']):
+    def localSearch(cities: ["City"]):
         improved = True
         while improved:
             improved = False
