@@ -1,8 +1,8 @@
-import Individual
+import individual
 
 class Population:
-    def __init__(self, tsp, size):
-        self.individuals = [Individual(tsp) for _ in range(size)]
+    def __init__(self, size):
+        self.individuals = [Individual() for _ in range(size)]
             
     def getBest(self):
         """Returns the individual with the lowest cost."""
