@@ -6,3 +6,4 @@ class Individual:
         
     def evaluate(self):
         self.cost = self.tsp.pathCost(self.path)
+        return self.cost
