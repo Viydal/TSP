@@ -6,6 +6,7 @@ class Population:
             
     def getBest(self):
         """Returns the individual with the lowest cost."""
+        min_cost = float('inf')
         for individual in self.individuals:
             temp = individual.evaluate()
             if (temp < min_cost):
