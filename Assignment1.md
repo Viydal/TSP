@@ -2,7 +2,7 @@ TSP Class
 Local Seach: Jump - Asad  
 Local Search: Exchange - Brian  
 Local Search: 2-opt neightborhoods - Brian  
-Construct EVP Individual Class - Riley  
+Construct EVP Individual Class - Rory 
 EVP: insert - Bryce  
 EVP: swap - Riley  
 EVP: inversion - Rory  
