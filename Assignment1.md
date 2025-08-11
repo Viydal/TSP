@@ -1,4 +1,4 @@
-TSP Class  
+TSP Class - Bryce
 Local Seach: Jump - Asad  
 Local Search: Exchange - Brian  
 Local Search: 2-opt neightborhoods - Brian  
@@ -6,10 +6,10 @@ Construct EVP Individual Class - Rory
 EVP: insert - Bryce  
 EVP: swap - Riley  
 EVP: inversion - Rory  
-EVP: Order Crossover  
-EVP: PMX Crossover  
-EVP: Cycle Crossover  
-EVP: Edge Recombination  
+EVP: Order Crossover - Riley
+EVP: PMX Crossover - Riley
+EVP: Cycle Crossover - Riley
+EVP: Edge Recombination - Rory
 Selection: fitness-proportional  
 Selection: tournament selection  
 Selection: Elitism  
