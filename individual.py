@@ -25,7 +25,7 @@ class Individual:
         temp = self.path[i]
         self.path[i] = self.path[j]
         self.path[j] = temp
-        
+
     def inversion(self):
         i = random.randint(0, len(self.path) - 1)
         j = random.randint(0, len(self.path) - 1)
@@ -34,5 +34,26 @@ class Individual:
         # Dist betwenn i & j
         sub_length = (j - i + 1)
         for k in range(sub_length // 2):
-            self.path[i + k], self.path[j - k] = self.path[j - k], self.path[i + k]
+            self.path[i + k], self.path[j -
+                                        k] = self.path[j - k], self.path[i + k]
         self.evaluate()
+
+    def insert(self):
+        x = 4
+        
+    
+
+    def saveBest(self, mutation=None):
+        currentPath = self.path
+        currentCost = self.evaluate()
+
+        if mutation == "swap":
+            self.swap()
+        elif mutation == "inversion":
+            self.inversion
+        elif mutation == "insert":
+            self.insert()
+            
+        if self.evaluate() > currentCost:
+            self.path = currentPath
+            self.cost = currentCost
