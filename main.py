@@ -1,6 +1,6 @@
 import tsp
 import individual
-from population import Population
+import population
 
 if __name__ == "__main__":
     tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
@@ -10,3 +10,8 @@ if __name__ == "__main__":
     print(individual.evaluate(), "\n")
     individual.performMutation("inversion")
     print(individual.evaluate(), "\n")
+    
+    population = population.Population(tsp_instance, 50)
+    
+    individualList = population.getPopulation()
+    population.orderCrossover(individualList[0], individualList[1])
