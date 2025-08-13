@@ -14,4 +14,4 @@ if __name__ == "__main__":
     population = population.Population(tsp_instance, 50)
     
     individualList = population.getPopulation()
-    population.orderCrossover(individualList[0], individualList[1])
+    population.PMXCrossover(individualList[0], individualList[1])
