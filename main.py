@@ -1,15 +1,17 @@
 import tsp
 from individual import Individual
 from population import Population
+import individual
+import population
 
 if __name__ == "__main__":
-  travel = TSP("st70.tsp")
-  tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
-  individual = individual.Individual(tsp_instance)
-  path = individual.path
-  print(path[0].point.x, path[0].point.y)
-  print(individual.evaluate())
-  print(individual.swap())
+#   travel = TSP("st70.tsp")
+#   tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
+#   individual = individual.Individual(tsp_instance)
+#   path = individual.path
+#   print(path[0].point.x, path[0].point.y)
+#   print(individual.evaluate())
+#   print(individual.swap())
     
     
     
@@ -38,3 +40,16 @@ if __name__ == "__main__":
     # print("Parent 1 path (first 5 cities):", [c.id for c in parent1.getPath()[:50]])
     # print("Parent 2 path (first 5 cities):", [c.id for c in parent2.getPath()[:50]])
     # print("Child path (first 5 cities):", [c.id for c in child.getPath()[:50]])
+
+    tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
+    individual = individual.Individual(tsp_instance)
+    path = individual.path
+    print(path[0].point.x, path[0].point.y)
+    print(individual.evaluate(), "\n")
+    individual.performMutation("inversion")
+    print(individual.evaluate(), "\n")
+    
+    population = population.Population(tsp_instance, 50)
+    
+    individualList = population.getPopulation()
+    population.PMXCrossover(individualList[0], individualList[1])
