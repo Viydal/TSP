@@ -3,9 +3,11 @@ import random
 
 class Population:
     def __init__(self, tsp, size, mutation=None):
+
         self.individuals = []
         for i in range(size):
             self.individuals.append(Individual(tsp))
+
             
     def getBest(self):
         """Returns the individual with the lowest cost."""

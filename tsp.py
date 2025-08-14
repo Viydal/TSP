@@ -24,8 +24,9 @@ class Point:
 class City:
     point: Point
 
-    def __init__(self, point: Point):
+    def __init__(self, point: Point, city_id: int):
         self.point = point
+        self.id = city_id
 
     def print(self):
         self.point.print()
@@ -59,7 +60,7 @@ class TSP:
             ex = int(ex)
             y = int(y)
             x = int(x)
-            self.Cities.append(City(Point(x, y)))
+            self.Cities.append(City(Point(x, y), ex))
             line = f.readline().strip()
         # print(f.readline().strip())
 
@@ -110,32 +111,32 @@ class localSearch:
                         # Swap back if not better
                         exchange(cities, i, j)
                         
-        def jump(tsp_instance, path):
-        
-            path = path[:]
-            cost = tsp_instance.pathCost(path)
-            improved = True
+    def jump(tsp_instance, path):
     
-            # loop through possible jumps
-            while improved:
-                improved = False
-                for i in range(len(path)):
-                    for j in range(len(path)):
-                        if i == j:
-                            continue
-                        
-                        # perform jump
-                        new_path = path[:]
-                        city = new_path.pop(i)
-                        new_path.insert(j, city)
-                        
-                        # Check if new path better
-                        new_cost = tsp_instance.pathCost(new_path)
-    
-                        if new_cost < cost:
-                            path = new_path
-                            cost = new_cost
-                            improved = True
-    
-            return path, 
+        path = path[:]
+        cost = tsp_instance.pathCost(path)
+        improved = True
+
+        # loop through possible jumps
+        while improved:
+            improved = False
+            for i in range(len(path)):
+                for j in range(len(path)):
+                    if i == j:
+                        continue
+                    
+                    # perform jump
+                    new_path = path[:]
+                    city = new_path.pop(i)
+                    new_path.insert(j, city)
+                    
+                    # Check if new path better
+                    new_cost = tsp_instance.pathCost(new_path)
+
+                    if new_cost < cost:
+                        path = new_path
+                        cost = new_cost
+                        improved = True
+
+        return path, 
         
