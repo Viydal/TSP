@@ -120,5 +120,76 @@ class Population:
                 
         print("child2 PMX crossover complete.\n")
             
-    def cycleCrossover(self):
-        pass
+    def cycleCrossover(self, parent1, parent2):
+        used = set()
+
+        child1 = [None] * len(parent1.path)
+        child2 = [None] * len(parent2.path)
+
+        parent1Cycle = {}
+        parent1CycleAvoid = {}
+        parent2Cycle = {}
+        parent2CycleAvoid = {}
+
+        print("Performing cycle crossover for child1\n")
+
+        keep = True
+        while len(used) < len(parent1.path):
+            for i in range(0, len(parent1.path) - 1):
+                if i not in used:
+                    index = i
+                    break
+
+            while parent1.path[index] not in parent1CycleAvoid:
+                if keep:
+                    parent1Cycle[parent1.path[index]] = index
+                parent1CycleAvoid[parent1.path[index]] = index
+                used.add(index)
+
+                value = parent2.path[index]
+                index = parent1.path.index(value)
+
+            if keep:
+                keep = False
+            else:
+                keep = True
+
+        for value, key in parent1Cycle.items():
+            child1[key] = value
+
+        for i in range(len(child1)):
+            if child1[i] is None:
+                child1[i] = parent2.path[i]
+
+        print("Performing cycle crossover for child2\n")
+
+        used = set()
+        keep = True
+        while len(used) < len(parent2.path):
+            for i in range(0, len(parent2.path) - 1):
+                if i not in used:
+                    index = i
+                    break
+
+            while parent2.path[index] not in parent2CycleAvoid:
+                if keep:
+                    parent2Cycle[parent2.path[index]] = index
+                parent2CycleAvoid[parent2.path[index]] = index
+                used.add(index)
+
+                value = parent1.path[index]
+                index = parent2.path.index(value)
+
+            if keep:
+                keep = False
+            else:
+                keep = True
+
+        for value, key in parent2Cycle.items():
+            child2[key] = value
+
+        for i in range(len(child2)):
+            if child2[i] is None:
+                child2[i] = parent1.path[i]
+                
+        print("Cycle crossover complete.\n")
