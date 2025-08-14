@@ -2,7 +2,7 @@ from individual import Individual
 
 class Population:
     def __init__(self, tsp, size, mutation=None):
-        self.individuals = [Individual(tsp, mutation) for _ in range(size)]
+        self.individuals = [Individual(tsp) for _ in range(size)]
             
     def getBest(self):
         """Returns the individual with the lowest cost."""
