@@ -42,12 +42,15 @@ if __name__ == "__main__":
     # print("Child path (first 5 cities):", [c.id for c in child.getPath()[:50]])
 
     tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
+    #tsp_instance = tsp.TSP("tsp_instances/eil51.tsp")
     individual = individual.Individual(tsp_instance)
-    path = individual.path
+    path = individual.path.copy()
     print(path[0].point.x, path[0].point.y)
     print(individual.evaluate(), "\n")
     individual.performMutation("inversion")
     print(individual.evaluate(), "\n")
+    #for i in range(len(individual.path)): 
+    #    print(i,path[i].point.x,path[i].point.y,individual.path[i].point.x,individual.path[i].point.y)
     
     population = population.Population(tsp_instance, 50)
     

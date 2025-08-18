@@ -48,9 +48,23 @@ class Individual:
         
         print(f"Inverted cities from {i} to {j}\n")
 
-    def insert(self):
-        # Placeholder
-        pass
+    def insert(self, i: int | None = None, j: int | None = None):
+        if i is None and j is None:
+            i = random.randint(0, len(self.path) - 1)
+            j = random.randint(0, len(self.path) - 1)
+            while i == j:
+                j = random.randint(0, len(self.path) - 1)
+        if i == None:
+            i = random.randint(0, len(self.path) - 1)
+        if j == None:
+            j = random.randint(0, len(self.path) - 1)
+        if i > j:
+            i,j = j,i # i is now always smaller than j
+
+        i_item = self.path.pop(i)
+        self.path.insert(j,i_item)
+
+        print(f"Inserted city {i} to {j}\n")
     
     def printPath(self, path_list):
         for i, city in enumerate(path_list):
