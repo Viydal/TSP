@@ -67,6 +67,16 @@ class Individual:
 
         print(f"Inserted city {j} to {i}\n")
     
+    def scramble(self, i: int | None = None, j: int | None = None):
+        section = []
+        for _i in range(j-i):
+            section.append(self.path.pop(i))
+        while len(section) > 0:
+            rand = random.randint(0,len(section))
+            self.path.insert(i,section.pop(rand))
+
+        print(f"Cities scrambled between {i} and {j}")
+
     def printPath(self, path_list):
         for i, city in enumerate(path_list):
             print(f"City {i}: ({city.point.x}, {city.point.y})")
@@ -81,6 +91,8 @@ class Individual:
             self.inversion()
         elif mutation == "insert":
             self.insert()
+        elif mutation == "scramble":
+            self.scramble()
         else:
             print("Invalid mutation operation.")
             
