@@ -276,7 +276,7 @@ class Population:
             parent1 = self.tournamentSelection()
             parent2 = self.tournamentSelection()
             
-            child1, child2 = self.performCrossover(crossover_method)
+            child1, child2 = self.performCrossover(parent1, parent2, crossover_method)
             
             nextGeneration.append(child1, child2)
 
