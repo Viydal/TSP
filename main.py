@@ -1,6 +1,7 @@
 import tsp
 from individual import Individual
 from population import Population
+from Local_Search import local_search
 import individual
 import population
 
@@ -41,18 +42,37 @@ if __name__ == "__main__":
     # print("Parent 2 path (first 5 cities):", [c.id for c in parent2.getPath()[:50]])
     # print("Child path (first 5 cities):", [c.id for c in child.getPath()[:50]])
 
-    tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
-    #tsp_instance = tsp.TSP("tsp_instances/eil51.tsp")
-    individual = individual.Individual(tsp_instance)
-    path = individual.path.copy()
-    print(path[0].point.x, path[0].point.y)
-    print(individual.evaluate(), "\n")
-    individual.performMutation("inversion")
-    print(individual.evaluate(), "\n")
-    #for i in range(len(individual.path)): 
-    #    print(i,path[i].point.x,path[i].point.y,individual.path[i].point.x,individual.path[i].point.y)
+    # tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
+    # individual = individual.Individual(tsp_instance)
+    # path = individual.path
+    # print(path[0].point.x, path[0].point.y)
+    # print(individual.evaluate(), "\n")
+    # individual.performMutation("inversion")
+    # print(individual.evaluate(), "\n")
+
+    # Load a TSP instance
+    tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")  # Update path as needed
+
+    # Create a random individual
+    ind = Individual(tsp_instance)
+    path = ind.getPath()  # Make sure your Individual class has getPath()
+
+    print("Original path cost:", tsp_instance.pathCost(path), "\n")
+
+    # Example of using local search ---------------------------------BRIAN 
+    print("Performing local search (Exchange)...")
+    improved_path = local_search.LocalSearch.local_search_exchange(path, tsp_instance)
+    
+
+    print("Performing 2-opt local search...")
+    improved_path_2opt = local_search.LocalSearch.local_search_2opt(path, tsp_instance)
+    print("Improved path cost after 2-opt:", tsp_instance.pathCost(improved_path_2opt), "\n")
+
     
     population = population.Population(tsp_instance, 50)
     
     individualList = population.getPopulation()
-    population.cycleCrossover(individualList[0], individualList[1])
+    nextGen = population.elitism()
+    
+    for i in range(len(nextGen)):
+        print(nextGen[i].cost)
