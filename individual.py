@@ -62,10 +62,10 @@ class Individual:
         if i > j:
             i,j = j,i # i is now always smaller than j
 
-        i_item = self.path.pop(i)
-        self.path.insert(j,i_item)
+        j_item = self.path.pop(j)
+        self.path.insert(i,j_item)
 
-        print(f"Inserted city {i} to {j}\n")
+        print(f"Inserted city {j} to {i}\n")
     
     def printPath(self, path_list):
         for i, city in enumerate(path_list):
