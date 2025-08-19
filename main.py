@@ -52,4 +52,4 @@ if __name__ == "__main__":
     population = population.Population(tsp_instance, 50)
     
     individualList = population.getPopulation()
-    population.cycleCrossover(individualList[0], individualList[1])
+    population.elitism()
