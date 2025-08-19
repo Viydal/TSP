@@ -17,9 +17,9 @@ Selection: fitness-proportional - Bryce
 Selection: tournament selection - Brian  
 Selection: Elitism - Riley  
 
-EVP: 1  
-EVP: 2  
-EVP: 3  
+Evolutionary Algorithm: 1 - Riley  
+Evolutionary Algorithm: 2  
+Evolutionary Algorithm: 3  
 
 Inver-over 
 
