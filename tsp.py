@@ -138,5 +138,4 @@ class localSearch:
                         cost = new_cost
                         improved = True
 
-        return path, 
-        
+        return path

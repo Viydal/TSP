@@ -8,7 +8,7 @@ class Individual:
         self.tsp = tsp_instance
         self.path = self.tsp.randomPath()
         self.cost = self.tsp.pathCost(self.path)
-    
+
     def evaluate(self):
         self.cost = self.tsp.pathCost(self.path)
         return self.cost
@@ -26,9 +26,9 @@ class Individual:
         temp = self.path[i]
         self.path[i] = self.path[j]
         self.path[j] = temp
-        
+
         self.evaluate()
-        
+
         print(f"Swapped cities {i}, and {j}\n")
 
     def inversion(self, i=None, j=None):
@@ -37,21 +37,22 @@ class Individual:
             j = random.randint(0, len(self.path) - 1)
         while i == j:
             j = random.randint(0, len(self.path) - 1)
-            
+
         if i > j:
             i, j = j, i
         # Dist betwenn i & j
         sub_length = (j - i + 1)
         for k in range(sub_length // 2):
-            self.path[i + k], self.path[j - k] = self.path[j - k], self.path[i + k]
+            self.path[i + k], self.path[j -
+                                        k] = self.path[j - k], self.path[i + k]
         self.evaluate()
-        
+
         print(f"Inverted cities from {i} to {j}\n")
 
     def insert(self):
         # Placeholder
         pass
-    
+
     def printPath(self, path_list):
         for i, city in enumerate(path_list):
             print(f"City {i}: ({city.point.x}, {city.point.y})")
@@ -72,17 +73,16 @@ class Individual:
         if self.evaluate() > currentCost:
             self.path = currentPath
             self.cost = currentCost
-            
-            
-            
+
     def edge_recombination(parent1, parent2):
         # Build adjacency table
         adjacency = {}
+
         def add_edge(city, neighbor):
             if city not in adjacency:
                 adjacency[city] = set()
             adjacency[city].add(neighbor)
-        
+
         for p in (parent1, parent2):
             for i in range(len(p)):
                 left = p[i - 1]
@@ -99,10 +99,11 @@ class Individual:
             # Remove current from adjacency
             for neighbors in adjacency.values():
                 neighbors.discard(current)
-            
+
             # Pick next city
             if adjacency[current]:
-                next_city = min(adjacency[current], key=lambda c: len(adjacency[c]))
+                next_city = min(adjacency[current],
+                                key=lambda c: len(adjacency[c]))
             else:
                 # If no adjacency left, choose random unused city
                 unused = [c for c in parent1 if c not in child]
@@ -112,4 +113,3 @@ class Individual:
             current = next_city
 
         return child
-
