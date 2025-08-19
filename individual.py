@@ -69,10 +69,13 @@ class Individual:
             self.insert()
         else:
             print("Invalid mutation operation.")
-
-        if self.evaluate() > currentCost:
-            self.path = currentPath
-            self.cost = currentCost
+            
+        # Take and update mutated individual
+        self.path = currentPath
+        self.cost = currentCost
+        self.evaluate()
+        
+        return self
 
     def edge_recombination(parent1, parent2):
         # Build adjacency table

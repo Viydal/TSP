@@ -4,8 +4,9 @@ import copy
 
 class Population:
     def __init__(self, tsp, size, mutation=None):
-
         self.individuals = []
+        self.size = size
+        self.tsp = tsp
         for i in range(size):
             self.individuals.append(Individual(tsp))
 
@@ -18,6 +19,18 @@ class Population:
             elif individual.evaluate() < min.cost:
                 min = individual
         return min
+    
+    def performCrossover(self, parent1, parent2, mutation=None):
+        if mutation == "order":
+            child1, child2 = self.orderCrossover(parent1, parent2)
+        elif mutation == "pmx":
+            child1, child2 = self.PMXCrossover(parent1, parent2)
+        elif mutation == "cycle":
+            child1, child2 = self.cycleCrossover(parent1, parent2)
+        else:
+            print("Invalid crossover operation.")
+            
+        return child1, child2
     
     def sortPopulation(self):
         individuals = self.individuals
@@ -77,8 +90,19 @@ class Population:
             if child2[position] is None and counter < len(remaining_cities):
                 child2[position] = remaining_cities[counter]
                 counter = counter + 1
-
+        
+        child1_individual = Individual(self.tsp)
+        child1_individual.path = child1
+        child1_individual.evaluate()
+        
+        child2_individual = Individual(self.tsp)
+        child2_individual.path = child2
+        child2_individual.evaluate()
+        
         print("child2 order crossover complete.\n")
+        
+        return child1_individual, child2_individual
+        
 
     def PMXCrossover(self, parent1, parent2):
         path_length = len(parent1.path)
@@ -128,8 +152,18 @@ class Population:
         for i in range(len(child1)):
             if child2[i] is None:
                 child2[i] = parent1.path[i]
+                
+        child1_individual = Individual(self.tsp)
+        child1_individual.path = child1
+        child1_individual.evaluate()
+        
+        child2_individual = Individual(self.tsp)
+        child2_individual.path = child2
+        child2_individual.evaluate()
 
         print("child2 PMX crossover complete.\n")
+        
+        return child1_individual, child2_individual
 
     def cycleCrossover(self, parent1, parent2):
         used = set()
@@ -202,27 +236,62 @@ class Population:
         for i in range(len(child2)):
             if child2[i] is None:
                 child2[i] = parent1.path[i]
+        
+        child1_individual = Individual(self.tsp)
+        child1_individual.path = child1
+        child1_individual.evaluate()
+        
+        child2_individual = Individual(self.tsp)
+        child2_individual.path = child2
+        child2_individual.evaluate()
 
         print("Cycle crossover complete.\n")
+        
+        return child1_individual, child2_individual
 
     # Copy N individuals over to next generation - fill rest with 60% crossover and 40% mutation
-    def elitism(self, n=10, c=None, m=None):
+    def elitism(self, elite_percentage=0.1, crossover_percentage=0.75, mutation_percentage=0.15, crossover_method="order", mutation_method="swap"):
         # Error checking
-        if c is None:
-            c = 0.6 * 50 - n
-        if m is None:
-            m = 0.4 * 50 - n
-        if n + c + m != 50:
-            print(f"Invalid parameters, proposed population size of {n + c + m}")
+        if elite_percentage + crossover_percentage + mutation_percentage != 1:
+            print(f"Invalid parameters, proposed population percentage not equal to 1: {elite_percentage + crossover_percentage + mutation_percentage}")
             return
-        
-        individuals = self.sortPopulation()
-        
-        for i in range(len(individuals)):
-            print(individuals[i].cost)
-        print()
-        
+
+        elite_count = int(elite_percentage * self.size)
+        crossover_count = int(crossover_percentage * self.size)
+        mutation_count = int(self.size - elite_count - crossover_count)
+
+        print(elite_count)
+        print(crossover_count)
+        print(mutation_count)
+
+        self.sortPopulation()
+
         # Elitism - Take the top n individuals in the population
         nextGeneration = []
-        for i in range(n):
-            nextGeneration.append(individuals[i])
+        for i in range(elite_count):
+            nextGeneration.append(self.individuals[i])
+
+        # Generate a percentage of the population, individuals through crossover
+        for i in range(crossover_count):
+            parent1 = self.tournamentSelection()
+            parent2 = self.tournamentSelection()
+            
+            child1, child2 = self.performCrossover(crossover_method)
+            
+            nextGeneration.append(child1, child2)
+
+        # Fill remaining with randomly selected mutated individuals
+        for i in range(mutation_count):
+            randomIndividual = random.choice(self.individuals)
+            mutation = randomIndividual.performMutation(mutation_method)
+            nextGeneration.append(mutation)
+        
+        for i in range(len(nextGeneration)):
+            print(nextGeneration[i].cost)
+        print()
+        
+        return nextGeneration
+    
+    def tournamentSelection():
+        # filler code
+        pass

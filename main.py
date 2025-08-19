@@ -52,4 +52,7 @@ if __name__ == "__main__":
     population = population.Population(tsp_instance, 50)
     
     individualList = population.getPopulation()
-    population.elitism()
+    nextGen = population.elitism()
+    
+    for i in range(len(nextGen)):
+        print(nextGen[i].cost)
