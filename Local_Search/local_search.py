@@ -42,33 +42,49 @@ class LocalSearch:
         print("Improved path cost after exchange:", best_cost)
         return 
     
-        # 2-opt neighborhood search: reverses the segment between i and j
+    # 2-opt neighborhood search: reverses the segment between i and j
+    # Your corrected function should be:
+
     def two_opt_neighborhood_local_search(cities, i, j):
+        """
+        2-opt neighborhood search: reverses the segment between i and j (inclusive)
+        """
         cities = cities[:]  # shallow copy
         if i < 0 or j >= len(cities) or i >= j:
             raise ValueError("Invalid indices for 2-opt operation")
-        # Reverse the segment between i+1 and j (inclusive)
-        cities[i+1:j+1] = reversed(cities[i+1:j+1])
+        
+        # Reverse the segment from i to j (inclusive)
+        cities[i:j+1] = reversed(cities[i:j+1])
         return cities
-
-    # Full 2-opt local search: repeatedly applies 2-opt moves to improve the tour
+    
     def local_search_2opt(cities, tsp_instance):
+        """
+        Full 2-opt local search: repeatedly applies 2-opt moves to improve the tour
+        """
         path = cities[:]
         improved = True
+        
         while improved:
             improved = False
             n = len(path)
-            best_cost = tsp_instance.pathCost(path)
-            best_path = path
+            current_cost = tsp_instance.pathCost(path)
+            best_cost = current_cost
+            best_path = path[:]
+            
+            # Try all possible 2-opt moves
             for i in range(n - 1):
                 for j in range(i + 2, n):
                     if i == 0 and j == n - 1:
                         continue  # skip full reversal
+                    
                     new_path = LocalSearch.two_opt_neighborhood_local_search(path, i, j)
                     new_cost = tsp_instance.pathCost(new_path)
+                    
                     if new_cost < best_cost:
-                        best_path = new_path
+                        best_path = new_path[:]
                         best_cost = new_cost
                         improved = True
+            
             path = best_path
-        return path
+        print("Improved path cost after 2-opt:", best_cost)
+        return 
