@@ -69,7 +69,10 @@ if __name__ == "__main__":
     print("Improved path cost after 2-opt:", tsp_instance.pathCost(improved_path_2opt), "\n")
 
     
-                            # population = population.Population(tsp_instance, 50)
+    population = population.Population(tsp_instance, 50)
     
-    # individualList = population.getPopulation()
-    # population.elitism()
+    individualList = population.getPopulation()
+    nextGen = population.elitism()
+    
+    for i in range(len(nextGen)):
+        print(nextGen[i].cost)
