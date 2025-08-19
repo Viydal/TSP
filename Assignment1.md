@@ -1,10 +1,10 @@
-TSP Class - Bryce ✅  
-Local Seach: Jump - Asad  
-Local Search: Exchange - Brian  
+TSP Class - Bryce  ✅  
+Local Seach: Jump - Asad  ✅
+Local Search: Exchange - Brian  ✅  
 Local Search: 2-opt neightborhoods - Brian  
 
-Construct EVP Individual Class - Rory ✅  
-EVP: insert - Bryce  
+Construct EVP Individual Class - Rory  ✅  
+EVP: insert - Asad  
 EVP: swap - Riley  ✅  
 EVP: inversion - Rory  ✅  
 
@@ -19,7 +19,7 @@ Selection: tournament selection 2 - Brian
 Selection: Elitism - Riley  
 
 Evolutionary Algorithm: 1 - Riley  
-Evolutionary Algorithm: 2  
+Evolutionary Algorithm: 2 - Asad
 Evolutionary Algorithm: 3  
 
 Inver-over 
