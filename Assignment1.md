@@ -20,7 +20,7 @@ Selection: Elitism - Riley
 
 Evolutionary Algorithm: 1 - Riley  
 Evolutionary Algorithm: 2 - Asad
-Evolutionary Algorithm: 3  
+Evolutionary Algorithm: 3 - Bryce
 
 Inver-over 
 
