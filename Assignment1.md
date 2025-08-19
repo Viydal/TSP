@@ -1,5 +1,5 @@
 TSP Class - Bryce  ✅  
-Local Seach: Jump - Asad  ✅
+Local Seach: Jump - Asad  ✅  
 Local Search: Exchange - Brian  ✅  
 Local Search: 2-opt neightborhoods - Brian  
 
