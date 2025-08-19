@@ -13,9 +13,9 @@ EVP: PMX Crossover - Riley  ✅
 EVP: Cycle Crossover - Riley  ✅    
 EVP: Edge Recombination - Rory  ✅  
 
-Selection: fitness-proportional  - Bryce  
-Selection: tournament selection  - Brian  
-Selection: Elitism  - Brian  
+Selection: fitness-proportional - Bryce  
+Selection: tournament selection - Brian  
+Selection: Elitism - Riley  
 
 EVP: 1  
 EVP: 2  
