@@ -1,6 +1,7 @@
 from individual import Individual
 import random
 import copy
+import math
 
 class Population:
     def __init__(self, tsp, size, mutation=None):
@@ -295,3 +296,30 @@ class Population:
     def tournamentSelection():
         # filler code
         pass
+    
+
+    def fitness_proportionalSelection(self, PopulationPerRoll: int = 10, rolls: int = 3):
+        self.sortPopulation()
+        newPopulation = []
+        fitness = []
+        totalFitnessSum = 0
+        for i in self.individuals:
+            fitness.append(math.floor(i.tsp.pathCost()))
+            totalFitnessSum += fitness[-1]
+        for i in rolls:
+            rand = random.randint(0,totalFitnessSum)
+            WinningRolls = []
+            for j in PopulationPerRoll:
+                WinningRolls.append(rand + j*totalFitnessSum/PopulationPerRoll)
+                if WinningRolls[-1] > totalFitnessSum:
+                    WinningRolls[-1] -= totalFitnessSum
+            for indiv in WinningRolls:
+                sum = 0
+                index = 0
+                while sum < indiv:
+                    sum += fitness[index]
+                    index += 1
+                newPopulation.append(self.individuals[index])
+        return newPopulation
+
+            
