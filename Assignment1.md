@@ -14,7 +14,8 @@ EVP: Cycle Crossover - Riley  ✅
 EVP: Edge Recombination - Rory  ✅  
 
 Selection: fitness-proportional - Bryce  
-Selection: tournament selection - Brian  
+Selection: tournament selection 1 - Brian  
+Selection: tournament selection 2 - Brian  
 Selection: Elitism - Riley  
 
 Evolutionary Algorithm: 1 - Riley  
