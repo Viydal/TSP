@@ -4,8 +4,9 @@ import copy
 
 class Population:
     def __init__(self, tsp, size, mutation=None):
-
         self.individuals = []
+        self.size = size
+        self.tsp = tsp
         for i in range(size):
             self.individuals.append(Individual(tsp))
 
@@ -18,6 +19,18 @@ class Population:
             elif individual.evaluate() < min.cost:
                 min = individual
         return min
+    
+    def performCrossover(self, parent1, parent2, mutation=None):
+        if mutation == "order":
+            child1, child2 = self.orderCrossover(parent1, parent2)
+        elif mutation == "pmx":
+            child1, child2 = self.PMXCrossover(parent1, parent2)
+        elif mutation == "cycle":
+            child1, child2 = self.cycleCrossover(parent1, parent2)
+        else:
+            print("Invalid crossover operation.")
+            
+        return child1, child2
     
     def sortPopulation(self):
         individuals = self.individuals
@@ -77,8 +90,19 @@ class Population:
             if child2[position] is None and counter < len(remaining_cities):
                 child2[position] = remaining_cities[counter]
                 counter = counter + 1
-
+        
+        child1_individual = Individual(self.tsp)
+        child1_individual.path = child1
+        child1_individual.evaluate()
+        
+        child2_individual = Individual(self.tsp)
+        child2_individual.path = child2
+        child2_individual.evaluate()
+        
         print("child2 order crossover complete.\n")
+        
+        return child1_individual, child2_individual
+        
 
     def PMXCrossover(self, parent1, parent2):
         path_length = len(parent1.path)
@@ -128,8 +152,18 @@ class Population:
         for i in range(len(child1)):
             if child2[i] is None:
                 child2[i] = parent1.path[i]
+                
+        child1_individual = Individual(self.tsp)
+        child1_individual.path = child1
+        child1_individual.evaluate()
+        
+        child2_individual = Individual(self.tsp)
+        child2_individual.path = child2
+        child2_individual.evaluate()
 
         print("child2 PMX crossover complete.\n")
+        
+        return child1_individual, child2_individual
 
     def cycleCrossover(self, parent1, parent2):
         used = set()
@@ -202,85 +236,37 @@ class Population:
         for i in range(len(child2)):
             if child2[i] is None:
                 child2[i] = parent1.path[i]
+        
+        child1_individual = Individual(self.tsp)
+        child1_individual.path = child1
+        child1_individual.evaluate()
+        
+        child2_individual = Individual(self.tsp)
+        child2_individual.path = child2
+        child2_individual.evaluate()
 
         print("Cycle crossover complete.\n")
+        
+        return child1_individual, child2_individual
 
     # Copy N individuals over to next generation - fill rest with 60% crossover and 40% mutation
-    def elitism(self, n=10, c=None, m=None):
+    def elitism(self, elite_percentage=0.1, crossover_percentage=0.75, mutation_percentage=0.15, crossover_method="order", mutation_method="swap"):
         # Error checking
-        if c is None:
-            c = 0.6 * 50 - n
-        if m is None:
-            m = 0.4 * 50 - n
-        if n + c + m != 50:
-            print(f"Invalid parameters, proposed population size of {n + c + m}")
+        if elite_percentage + crossover_percentage + mutation_percentage != 1:
+            print(f"Invalid parameters, proposed population percentage not equal to 1: {elite_percentage + crossover_percentage + mutation_percentage}")
             return
-        
-        individuals = self.sortPopulation()
-        
-        for i in range(len(individuals)):
-            print(individuals[i].cost)
-        print()
-        
+
+        elite_count = int(elite_percentage * self.size)
+        crossover_count = int(crossover_percentage * self.size)
+        mutation_count = int(self.size - elite_count - crossover_count)
+
+        print(elite_count)
+        print(crossover_count)
+        print(mutation_count)
+
+        self.sortPopulation()
+
         # Elitism - Take the top n individuals in the population
         nextGeneration = []
         for i in range(n):
             nextGeneration.append(individuals[i])
-
-    # Choose best n random individuals to cary over till next generation
-    # choose k individual to carry over to next generation
-    def tournament_Selection(self, k=3):
-
-        #uses self.sortPopulation() to sort the population
-        tournament = random.sample(self.individuals, k)
-        
-        # Select the top two individuals as parents
-        winner = max(tournament, key=lambda ind: ind.evaluate())
-
-        return winner
-
-    # Informal tournament selection - select two parents from the population
-    # This is similar to tournament selection but allows for self-mating
-    def informal_tournament_selection(self, k=3):
-        
-        parent1 = self.tournament_Selection(k)
-        parent2 = self.tournament_Selection(k)
-
-        #returns same individuals as in GA -> there is self mating. 
-        # Don't know if want to keep diversity or not
-
-        #DIVERSITY -> INCLUDE IF WANT THIS
-        # while parent1 == parent2:
-        #     parent2 = self.tournament_Selection(k)
-        
-        return parent1, parent2
-    
-    # Rank of i => higher ranked individuals are more likley to win tournament 
-    # Tournament size k => bigger k stronger selection pressure. With more contestants, it's 
-    
-    # FUNCTION ARGUMENTS:
-    #   pop: list of individuals; each has .fitness
-
-    #   k: number of contestants in each tournament
-
-    #   replace: 
-    #       if True, contestants can be selected multiple times
-    #       if False, each contestant is unique in the tournament
-
-    #   deterministic: if True, the best contestant always wins
-    
-    #   p: probability that the best contestant wins; if < 1.0, allows for some randomness
-    def tournament_select(pop, k=3, replace=True, deterministic=True, p=1.0):
-        # pop: list of individuals; each has .fitness
-        contestants = (random.choices(pop, k=k) if replace
-                    else random.sample(pop, k=min(k, len(pop))))
-        contestants.sort(key=lambda ind: ind.fitness, reverse=True)  # higher is better
-
-        if deterministic or p >= 1.0:
-            return contestants[0]  # best always wins
-
-        # probabilistic: best wins with prob p, otherwise pick one of the rest
-        if random.random() < p:
-            return contestants[0]
-        # pick a non-best uniformly (you can bias by rank if you want)
-        return random.choice(contestants[1:]) if len(contestants) > 1 else contestants[0]
