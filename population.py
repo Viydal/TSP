@@ -270,3 +270,13 @@ class Population:
         nextGeneration = []
         for i in range(n):
             nextGeneration.append(individuals[i])
+            
+    def tournament_Selection(self, k=3):
+        tournament = random.sample(self.individuals, k)
+        winner = min(tournament, key=lambda ind: ind.evaluate())
+        return winner
+
+    def informal_tournament_selection(self, k=3):
+        parent1 = self.tournament_Selection(k)
+        parent2 = self.tournament_Selection(k)
+        return parent1, parent2
