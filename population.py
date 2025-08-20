@@ -270,12 +270,16 @@ class Population:
         nextGeneration = []
         for i in range(n):
             nextGeneration.append(individuals[i])
-            
-    def tournament_Selection(self, k=3):
-        tournament = random.sample(self.individuals, k)
-        winner = min(tournament, key=lambda ind: ind.evaluate())
-        return winner
 
+    # tournament selection for parent selection
+    def tournament_Selection(self, k=3):
+        tournament = random.sample(self.individuals, k) # Randomly select k individuals from the population
+        winner = min(tournament, key=lambda ind: ind.evaluate()) # Get the individual with the lowest cost
+        return winner
+    
+    # Informal tournament selection for parent selection
+    # This method selects two parents using tournament selection
+    # Not sure if right
     def informal_tournament_selection(self, k=3):
         parent1 = self.tournament_Selection(k)
         parent2 = self.tournament_Selection(k)
