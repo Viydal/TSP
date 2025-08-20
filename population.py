@@ -226,3 +226,61 @@ class Population:
         nextGeneration = []
         for i in range(n):
             nextGeneration.append(individuals[i])
+
+    # Choose best n random individuals to cary over till next generation
+    # choose k individual to carry over to next generation
+    def tournament_Selection(self, k=3):
+
+        #uses self.sortPopulation() to sort the population
+        tournament = random.sample(self.individuals, k)
+        
+        # Select the top two individuals as parents
+        winner = max(tournament, key=lambda ind: ind.evaluate())
+
+        return winner
+
+    # Informal tournament selection - select two parents from the population
+    # This is similar to tournament selection but allows for self-mating
+    def informal_tournament_selection(self, k=3):
+        
+        parent1 = self.tournament_Selection(k)
+        parent2 = self.tournament_Selection(k)
+
+        #returns same individuals as in GA -> there is self mating. 
+        # Don't know if want to keep diversity or not
+
+        #DIVERSITY -> INCLUDE IF WANT THIS
+        # while parent1 == parent2:
+        #     parent2 = self.tournament_Selection(k)
+        
+        return parent1, parent2
+    
+    # Rank of i => higher ranked individuals are more likley to win tournament 
+    # Tournament size k => bigger k stronger selection pressure. With more contestants, it's 
+    
+    # FUNCTION ARGUMENTS:
+    #   pop: list of individuals; each has .fitness
+
+    #   k: number of contestants in each tournament
+
+    #   replace: 
+    #       if True, contestants can be selected multiple times
+    #       if False, each contestant is unique in the tournament
+
+    #   deterministic: if True, the best contestant always wins
+    
+    #   p: probability that the best contestant wins; if < 1.0, allows for some randomness
+    def tournament_select(pop, k=3, replace=True, deterministic=True, p=1.0):
+        # pop: list of individuals; each has .fitness
+        contestants = (random.choices(pop, k=k) if replace
+                    else random.sample(pop, k=min(k, len(pop))))
+        contestants.sort(key=lambda ind: ind.fitness, reverse=True)  # higher is better
+
+        if deterministic or p >= 1.0:
+            return contestants[0]  # best always wins
+
+        # probabilistic: best wins with prob p, otherwise pick one of the rest
+        if random.random() < p:
+            return contestants[0]
+        # pick a non-best uniformly (you can bias by rank if you want)
+        return random.choice(contestants[1:]) if len(contestants) > 1 else contestants[0]
