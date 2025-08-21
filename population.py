@@ -268,8 +268,29 @@ class Population:
 
         # Elitism - Take the top n individuals in the population
         nextGeneration = []
-        for i in range(n):
-            nextGeneration.append(individuals[i])
+        for i in range(elite_count):
+            nextGeneration.append(self.individuals[i])
+
+        # Generate a percentage of the population, individuals through crossover
+        for i in range(crossover_count):
+            parent1 = self.tournamentSelection()
+            parent2 = self.tournamentSelection()
+            
+            child1, child2 = self.performCrossover(parent1, parent2, crossover_method)
+            
+            nextGeneration.append(child1, child2)
+
+        # Fill remaining with randomly selected mutated individuals
+        for i in range(mutation_count):
+            randomIndividual = random.choice(self.individuals)
+            mutation = randomIndividual.performMutation(mutation_method)
+            nextGeneration.append(mutation)
+        
+        for i in range(len(nextGeneration)):
+            print(nextGeneration[i].cost)
+        print()
+        
+        return nextGeneration
 
     # tournament selection for parent selection
     def tournament_Selection(self, k=3):
