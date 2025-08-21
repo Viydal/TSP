@@ -45,20 +45,14 @@ class LocalSearch:
     # 2-opt neighborhood search: reverses the segment between i and j
     # Your corrected function should be:
 
-    def two_opt_neighborhood_local_search(cities, i, j):
-        
+
+
+    def two_opt_neighborhood_local_search(tour, i, k):
         #2-opt neighborhood search: reverses the segment between i and j (inclusive)
-        
-        cities = cities[:]  # shallow copy
-        if i < 0 or j >= len(cities) or i >= j:
-            raise ValueError("Invalid indices for 2-opt operation")
-        
-        # Reverse the segment from i to j (inclusive)
-        cities[i:j+1] = reversed(cities[i:j+1])
-        return cities
+        new_tour = tour[0:i] + tour[i:k + 1][::-1] + tour[k + 1:]
+        return new_tour
     
     def local_search_2opt(cities, tsp_instance):
-        
         #Full 2-opt local search: repeatedly applies 2-opt moves to improve the tour
         
         path = cities[:]

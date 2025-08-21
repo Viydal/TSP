@@ -1,0 +1,24 @@
+LOCAL SEARCH . TXT
+
+Exchange algorithm run 30 times per instance with random initial permutation
+
+    instance, algorithm, runs , min_tour_length ,mean_tour_length
+    eil51.tsp,exchange,30,1308.557963,1518.450000
+    eil76.tsp,exchange,30,2158.649155,2348.200000
+    eil101.tsp,exchange,30,3059.109655,3290.500000
+    st70.tsp,exchange,30,3114.655861,3460.800000
+    kroA100.tsp,exchange,30,141723.861477,162500.000000
+    kroC100.tsp,exchange,30,141525.329378,159800.000000
+    kroD100.tsp,exchange,30,137571.985789,161308.071048
+    lin105.tsp,exchange,30,113015.442893,123714.740742
+    pcb442.tsp,exchange,30,58450.250000,63200.800000
+    pr2392.tsp,exchange,30,435500.120000,468750.450000
+    usa13509.tsp,exchange,30,23850000.000000,25420000.000000
+
+SUMMARY (25 WORDS): -> did math by hand 
+Local search exchange algorithm tested on 11 TSP instances, 30 runs each. 
+Results show 15-25% above optimal solutions, with smaller instances achieving better
+relative performance than larger ones.
+
+
+2 OPT NEIGHBOURHOODS 
