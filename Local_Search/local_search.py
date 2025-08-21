@@ -70,7 +70,7 @@ class LocalSearch:
                     if i == 0 and j == n - 1:
                         continue  # skip full reversal
                     
-                    new_tour = best_tour[:i+1] + best_tour[i+1:k+1][::-1] + best_tour[k+1:]
+                    new_tour = best_tour[:i+1] + best_tour[i+1:j+1][::-1] + best_tour[j+1:]
                     new_cost = tsp_instance.pathCost(new_tour)
                 if new_cost < best_cost:
                     best_tour, best_cost = new_tour, new_cost
@@ -78,5 +78,5 @@ class LocalSearch:
                     break
             if improved:
                 break
-
-        return best_tour, best_cost
+        print("Improved path cost after 2-opt:", best_cost)
+        return 

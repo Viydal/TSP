@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # print(individual.evaluate(), "\n")
     # individual.performMutation("inversion")
     # print(individual.evaluate(), "\n")
-
+    
     # Load a TSP instance
     tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")  # Update path as needed
 
@@ -50,18 +50,19 @@ if __name__ == "__main__":
     ind = Individual(tsp_instance)
     path = ind.getPath()  # Make sure your Individual class has getPath()
     print("Original path cost:", tsp_instance.pathCost(path), "\n")
+
     # Example of using local search ---------------------------------BRIAN 
-    print("Performing local search (Exchange)...")
-    improved_path = local_search.LocalSearch.local_search_exchange(path, tsp_instance)
+    # print("Performing local search (Exchange)...")
+    # improved_path = local_search.LocalSearch.local_search_exchange(path, tsp_instance)
 
     print("Performing 2-opt local search...")
-    improved_path_2opt = local_search.Local_Search.local_search_2opt(path, tsp_instance)
-    print("Improved path cost after 2-opt:", tsp_instance.pathCost(improved_path_2opt), "\n")
+    improved_path_2opt = local_search.LocalSearch.local_search_2opt(path, tsp_instance)
+
 
     population = population.Population(tsp_instance, 50)
 
     individualList = population.getPopulation()
     nextGen = population.elitism()
 
-    for i in range(len(nextGen)):
-        print(nextGen[i].cost)
+    # for i in range(len(nextGen)):
+    #     print(nextGen[i].cost)

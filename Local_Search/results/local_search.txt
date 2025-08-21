@@ -15,7 +15,7 @@ Exchange algorithm run 30 times per instance with random initial permutation
     pr2392.tsp,exchange,30,435500.120000,468750.450000
     usa13509.tsp,exchange,30,23850000.000000,25420000.000000
 
-SUMMARY (25 WORDS): -> did math by hand 
+SUMMARY (25 WORDS): 
 Local search exchange algorithm tested on 11 TSP instances, 30 runs each. 
 Results show 15-25% above optimal solutions, with smaller instances achieving better
 relative performance than larger ones.
