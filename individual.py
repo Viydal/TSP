@@ -60,21 +60,21 @@ class Individual:
         if j == None:
             j = random.randint(0, len(self.path) - 1)
         if i > j:
-            i,j = j,i # i is now always smaller than j
+            i, j = j, i  # i is now always smaller than j
 
         j_item = self.path.pop(j)
-        self.path.insert(i,j_item)
+        self.path.insert(i, j_item)
 
         # print(f"Inserted city {j} to {i}\n")
-    
+
     # Scramble function doesn't work
     def scramble(self, i: int | None = None, j: int | None = None):
         section = []
         for _i in range(j-i):
             section.append(self.path.pop(i))
         while len(section) > 0:
-            rand = random.randint(0,len(section))
-            self.path.insert(i,section.pop(rand))
+            rand = random.randint(0, len(section))
+            self.path.insert(i, section.pop(rand))
 
         # print(f"Cities scrambled between {i} and {j}")
 
@@ -99,12 +99,12 @@ class Individual:
             self.scramble()
         else:
             print("Invalid mutation operation.")
-            
+
         # Take and update mutated individual
         self.path = currentPath
         self.cost = currentCost
         self.evaluate()
-        
+
         return self
 
     def edge_recombination(parent1, parent2):
