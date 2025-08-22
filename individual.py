@@ -47,7 +47,7 @@ class Individual:
                                         k] = self.path[j - k], self.path[i + k]
         self.evaluate()
 
-        print(f"Inverted cities from {i} to {j}\n")
+        # print(f"Inverted cities from {i} to {j}\n")
 
     def insert(self, i: int | None = None, j: int | None = None):
         if i is None and j is None:
@@ -65,8 +65,9 @@ class Individual:
         j_item = self.path.pop(j)
         self.path.insert(i,j_item)
 
-        print(f"Inserted city {j} to {i}\n")
+        # print(f"Inserted city {j} to {i}\n")
     
+    # Scramble function doesn't work
     def scramble(self, i: int | None = None, j: int | None = None):
         section = []
         for _i in range(j-i):
@@ -75,26 +76,26 @@ class Individual:
             rand = random.randint(0,len(section))
             self.path.insert(i,section.pop(rand))
 
-        print(f"Cities scrambled between {i} and {j}")
+        # print(f"Cities scrambled between {i} and {j}")
 
-    def printPath(self, path_list):
-        for i, city in enumerate(path_list):
-            print(f"City {i}: ({city.point.x}, {city.point.y})")
+    def printPath(self):
+        for i, city in enumerate(self.path):
+            print(f"City {i} ({city.id}): ({city.point.x}, {city.point.y})")
 
-    def performMutation(self, mutation_probability=0.05, mutation="swap"):
+    def performMutation(self, mutation_probability=0.05, mutation_type="swap"):
         random_number = random.random()
         if (random_number > mutation_probability):
             return self
         currentPath = self.path.copy()
         currentCost = self.evaluate()
 
-        if mutation == "swap":
+        if mutation_type == "swap":
             self.swap()
-        elif mutation == "inversion":
+        elif mutation_type == "inversion":
             self.inversion()
-        elif mutation == "insert":
+        elif mutation_type == "insert":
             self.insert()
-        elif mutation == "scramble":
+        elif mutation_type == "scramble":
             self.scramble()
         else:
             print("Invalid mutation operation.")

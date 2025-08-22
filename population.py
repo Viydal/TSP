@@ -139,16 +139,16 @@ class Population:
             child1[i] = parent1.path[i]
             child2[i] = parent2.path[i]
 
-        for i in range(start, end):
+        for i in range(start, end + 1):
             if parent2.path[i] not in child1:
                 print("city not in child")
-                findValue = parent1.path[i]
-                index = parent2.path.index(findValue)
+                findValue = parent1.path[i].id
+                index = next(j for j, city in enumerate(parent2.path) if city.id == findValue)
 
                 while index <= end and index >= start:
                     print("city is within crossover portion, continue.")
-                    findValue = parent1.path[index]
-                    index = parent2.path.index(findValue)
+                    findValue = parent1.path[index].id
+                    index = next(j for j, city in enumerate(parent2.path) if city.id == findValue)
                     child1[index] = parent2.path[i]
 
         for i in range(len(child1)):
@@ -157,16 +157,16 @@ class Population:
 
         print("child1 PMX crossover complete.\n")
 
-        for i in range(start, end):
+        for i in range(start, end + 1):
             if parent1.path[i] not in child2:
                 print("city not in child")
-                findValue = parent2.path[i]
-                index = parent1.path.index(findValue)
+                findValue = parent2.path[i].id
+                index = next(j for j, city in enumerate(parent1.path) if city.id == findValue)
 
                 while index <= end and index >= start:
                     print("city is within crossover portion, continue.")
-                    findValue = parent2.path[index]
-                    index = parent1.path.index(findValue)
+                    findValue = parent2.path[index].id
+                    index = next(j for j, city in enumerate(parent1.path) if city.id == findValue)
                     child2[index] = parent1.path[i]
 
         for i in range(len(child1)):

@@ -10,4 +10,6 @@ if __name__ == "__main__":
     # Create population of size 50
     population = population.Population(tsp_instance, 50)
     
-    solution1 = evolution.Evolution.EA1(population)
+    solution1 = evolution.Evolution.EA1(population, 300)
+    print(solution1.printPath())
+    print(f"best solution with cost: {solution1.evaluate()}")
