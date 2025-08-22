@@ -23,8 +23,7 @@ class Evolution:
 
             # Perform crossover for each pair of individuals in the mating pool
             for j in range(0, len(matingPool), 2):
-                child1, child2 = population.performCrossover(
-                    matingPool[j], matingPool[j + 1], crossover_type="cycle")
+                child1, child2 = population.performCrossover(matingPool[j], matingPool[j + 1], crossover_type="pmx")
                 childrenPool.append(child1)
                 childrenPool.append(child2)
 
@@ -37,10 +36,9 @@ class Evolution:
             population.updatePopulation(nextGeneration)
 
             if i % 100 == 0:
-                print(
-                    f"generation: {i} - best path with cost: {population.bestPathCost()}")
-            
-            # time.sleep(2)
+                print(f"generation: {i} - best path with cost: {population.bestPathCost()}")
+                
+            # time.sleep(0.1)
 
         return population.getBest()
 
