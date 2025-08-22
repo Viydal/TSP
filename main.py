@@ -79,70 +79,64 @@ if __name__ == "__main__":
     #     print(nextGen[i].cost)
 
 
-###########################################
-import os
-import random
-import statistics as stats
+########################################### BRIAN ##########################################
+# import statistics as stats
 
-import tsp
-from individual import Individual
+# # import instances
+# INSTANCES = [
+#     "eil51.tsp", "eil76.tsp", "eil101.tsp", "st70.tsp",
+#     "kroA100.tsp", "kroC100.tsp", "kroD100.tsp", "lin105.tsp", "pcb442.tsp", "pr2392.tsp", "usa13509.tsp"
+# ]
 
-
-# Just the instances that work 
-INSTANCES = [
-    "eil51.tsp", "eil76.tsp", "eil101.tsp", "st70.tsp",
-    "kroA100.tsp", "kroC100.tsp", "kroD100.tsp", "lin105.tsp"
-]
-
-def main():
-    # Create results directory
-    os.makedirs("results", exist_ok=True)
+# def main():
+#     # results directory
+#     os.makedirs("results", exist_ok=True)
     
-    # Write results header
-    with open("results/local_search.txt", "w") as f:
-        f.write("instance,algorithm,runs,min_tour_length,mean_tour_length\n")
+#     # write results header
+#     with open("results/local_search.txt", "w") as f:
+#         f.write("instance,algorithm,runs,min_tour_length,mean_tour_length\n")
     
-    # Process each instance
-    for instance_file in INSTANCES:
-        print(f"\n=== {instance_file} ===")
+#     # process each instance
+#     for instance_file in INSTANCES:
+#         print(f"\n=== {instance_file} ===")
         
-        # Load TSP instance
-        tsp_instance = tsp.TSP(f"tsp_instances/{instance_file}")
+#         # load TSP instance
+#         tsp_instance = tsp.TSP(f"tsp_instances/{instance_file}")
         
-        # Run exchange algorithm 30 times
-        costs = []
-        for run in range(30):
-            # Create random individual
-            random.seed()  # Fresh randomness each run
-            ind = Individual(tsp_instance)
-            path = ind.getPath()
+#         # run exchange algorithm 30 times
+#         costs = []
+#         for run in range(30):
+#             # create random individual
+#             random.seed()  # Fresh randomness each run
+#             ind = Individual(tsp_instance)
+#             path = ind.getPath()
             
-            # Apply local search exchange
-            improved_path = local_search.LocalSearch.local_search_2opt(path, tsp_instance)
+#             # apply local search exchange
+#             improved_path = local_search.LocalSearch.local_search_2opt(path, tsp_instance)
             
-            # Handle case where function returns None (modifies in-place)
-            if improved_path is None:
-                improved_path = path
+#             # handle case where function returns None (modifies in-place)
+#             if improved_path is None:
+#                 improved_path = path
             
-            # Calculate cost and store
-            cost = tsp_instance.pathCost(improved_path)
-            costs.append(cost)
+#             # calculate cost and store
+#             cost = tsp_instance.pathCost(improved_path)
+#             costs.append(cost)
             
-            # Progress indicator
-            if (run + 1) % 10 == 0:
-                print(f"  Run {run + 1}/30 complete")
+#             # progress indicator
+#             if (run + 1) % 10 == 0:
+#                 print(f"  Run {run + 1}/30 complete")
         
-        # Calculate min and mean
-        min_cost = min(costs)
-        mean_cost = stats.fmean(costs)
+#         # calculate min and mean
+#         min_cost = min(costs)
+#         mean_cost = stats.fmean(costs)
         
-        print(f"  Min: {min_cost:.6f}, Mean: {mean_cost:.6f}")
+#         print(f"  Min: {min_cost:.6f}, Mean: {mean_cost:.6f}")
         
-        # Write to results file
-        with open("results/local_search.txt", "a") as f:
-            f.write(f"{instance_file},2opt,30,{min_cost:.6f},{mean_cost:.6f}\n")
+#         # write to results file
+#         with open("results/local_search.txt", "a") as f:
+#             f.write(f"{instance_file},2opt,30,{min_cost:.6f},{mean_cost:.6f}\n")
     
-    print(f"\nDone! Results written to results/local_search.txt")
+#     print(f"\nDone! Results written to results/local_search.txt")
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     main()
