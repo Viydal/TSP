@@ -18,9 +18,9 @@ Selection: tournament selection 1 - Brian  ✅
 Selection: tournament selection 2 - Brian  
 Selection: Elitism - Riley  ✅  
 
-Evolutionary Algorithm: 1 - Riley  ✅  
-Evolutionary Algorithm: 2 - Asad  ✅ 
-Evolutionary Algorithm: 3 - Bryce  
+Evolutionary Algorithm: 1 - Riley  ✅
+Evolutionary Algorithm: 2 - Asad  ✅
+Evolutionary Algorithm: 3 - Bryce 
 
 Inver-over 
 
