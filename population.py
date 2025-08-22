@@ -20,13 +20,22 @@ class Population:
             elif individual.evaluate() < min.cost:
                 min = individual
         return min
+    
+    def bestPathCost(self):
+        min = None
+        for individual in self.individuals:
+            if (min == None):
+                min = individual
+            elif individual.evaluate() < min.cost:
+                min = individual
+        return min.cost
 
     def performCrossover(self, parent1, parent2, crossover_probability=0.8, crossover_type="order"):
         # Should crossover occur, if not return parents without modification
         random_number = random.random()
         if (random_number > crossover_probability):
             return parent1, parent2
-        
+
         # If crossover should occur, perform crossover and return children
         if crossover_type == "order":
             child1, child2 = self.orderCrossover(parent1, parent2)
@@ -38,6 +47,10 @@ class Population:
             print("Invalid crossover operation.")
 
         return child1, child2
+    
+    def updatePopulation(self, newPopulation: list[Individual]):
+        self.individuals = newPopulation
+        self.size = len(self.individuals)
 
     def sortPopulation(self):
         individuals = self.individuals
@@ -59,7 +72,7 @@ class Population:
         start = random.randint(0, path_length - 1)
         end = random.randint(start, path_length - 1)
 
-        print(f"Performing order crossover on index {start} to index {end}\n")
+        # print(f"Performing order crossover on index {start} to index {end}\n")
 
         child1 = [None] * path_length
         child2 = [None] * path_length
@@ -70,8 +83,8 @@ class Population:
 
         remaining_cities = []
 
-        for i in range(end + 1, len(parent2.path) + start):
-            pos = (end + i + 1) % len(parent2.path)
+        for i in range(path_length):
+            pos = i % len(parent2.path)
             if parent2.path[pos] not in child1:
                 remaining_cities.append(parent2.path[pos])
 
@@ -82,12 +95,12 @@ class Population:
                 child1[position] = remaining_cities[counter]
                 counter = counter + 1
 
-        print("child1 order crossover complete.\n")
+        # print("child1 order crossover complete.\n")
 
         remaining_cities = []
 
-        for i in range(end + 1, len(parent1.path) + start):
-            pos = (end + i + 1) % len(parent1.path)
+        for i in range(path_length):
+            pos = i % len(parent1.path)
             if parent1.path[pos] not in child2:
                 remaining_cities.append(parent1.path[pos])
 
@@ -100,14 +113,13 @@ class Population:
 
         child1_individual = Individual(self.tsp)
         child1_individual.path = child1
-        print(child1_individual.path)
         child1_individual.evaluate()
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = child2
         child2_individual.evaluate()
 
-        print("child2 order crossover complete.\n")
+        # print("child2 order crossover complete.\n")
 
         return child1_individual, child2_individual
 
@@ -117,7 +129,7 @@ class Population:
         start = random.randint(0, path_length - 1)
         end = random.randint(start, path_length - 1)
 
-        print(f"Performing PMX crossover on index {start} to index {end}\n")
+        # print(f"Performing PMX crossover on index {start} to index {end}\n")
 
         child1 = [None] * path_length
         child2 = [None] * path_length
@@ -259,6 +271,8 @@ class Population:
     # Copy N individuals over to next generation and return the partially filled next generation
     def elitism(self, elite_percentage=0.1):
         elite_count = int(elite_percentage * self.size)
+        if not elite_count % 2 == 0:
+            elite_count += 1
 
         self.sortPopulation()
 

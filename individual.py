@@ -29,7 +29,7 @@ class Individual:
 
         self.evaluate()
 
-        print(f"Swapped cities {i}, and {j}\n")
+        # print(f"Swapped cities {i}, and {j}\n")
 
     def inversion(self, i=None, j=None):
         if i == None or j == None:
@@ -57,7 +57,10 @@ class Individual:
         for i, city in enumerate(path_list):
             print(f"City {i}: ({city.point.x}, {city.point.y})")
 
-    def performMutation(self, mutation=None):
+    def performMutation(self, mutation_probability=0.05, mutation="swap"):
+        random_number = random.random()
+        if (random_number > mutation_probability):
+            return self
         currentPath = self.path.copy()
         currentCost = self.evaluate()
 

@@ -10,22 +10,35 @@ class Evolution:
             nextGeneration = []
             nextGeneration.extend(population.elitism())
             
-            for i in range(len(nextGeneration)):
-                print(nextGeneration[i])
+            # Future children
+            childrenPool = []
             
-            # Create mating pool for next generation
+            # Create mating pool of individuals for next generation
             matingPool = []
-            for i in range(population.size - len(nextGeneration)):
+            for j in range(population.size - len(nextGeneration)):
                 matingPool.append(population.tournament_Selection())
             
             # Shuffle mating pool
             random.shuffle(matingPool)
             
-            for i in range(len(matingPool) - 1):
-                population.performCrossover(matingPool[i], matingPool[i + 1], crossover_type="order")
-                
-                
-            time.sleep(1)
+            # Perform crossover for each pair of individuals in the mating pool
+            for j in range(0, len(matingPool), 2):
+                child1, child2 = population.performCrossover(matingPool[j], matingPool[j + 1], crossover_type="order")
+                childrenPool.append(child1)
+                childrenPool.append(child2)
+            
+            # Perform mutation on each individual in the mating pool   
+            for j in range(len(childrenPool) - 1):
+                childrenPool[j] = childrenPool[j].performMutation()
+            
+            # New population
+            nextGeneration.extend(childrenPool)
+            population.updatePopulation(nextGeneration)
+            
+            if i % 100 == 0:
+                print(f"generation: {i} - best path with cost: {population.bestPathCost()}")
+            
+        return population.bestPathCost()
 
     def EA2():
         pass
