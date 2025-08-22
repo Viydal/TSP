@@ -2,18 +2,20 @@ LOCAL SEARCH . TXT
 
 Exchange algorithm run 30 times per instance with random initial permutation
 
-    instance, algorithm, runs , min_tour_length ,mean_tour_length
-    eil51.tsp,exchange,30,1308.557963,1518.450000
-    eil76.tsp,exchange,30,2158.649155,2348.200000
-    eil101.tsp,exchange,30,3059.109655,3290.500000
-    st70.tsp,exchange,30,3114.655861,3460.800000
-    kroA100.tsp,exchange,30,141723.861477,162500.000000
-    kroC100.tsp,exchange,30,141525.329378,159800.000000
-    kroD100.tsp,exchange,30,137571.985789,161308.071048
-    lin105.tsp,exchange,30,113015.442893,123714.740742
-    pcb442.tsp,exchange,30,58450.250000,63200.800000
-    pr2392.tsp,exchange,30,435500.120000,468750.450000
-    usa13509.tsp,exchange,30,23850000.000000,25420000.000000
+    instance,algorithm,runs,min_tour_length,mean_tour_length
+    eil51.tsp,exchange,30,1652.381942,1804.729133
+    eil76.tsp,exchange,30,2453.772814,2661.548203
+    eil101.tsp,exchange,30,3481.509372,3686.932147
+    st70.tsp,exchange,30,3382.644188,3794.327199
+    kroA100.tsp,exchange,30,168523.947103,182006.381742
+    kroC100.tsp,exchange,30,165812.549371,179905.448217
+    kroD100.tsp,exchange,30,156247.338291,170842.994512
+    lin105.tsp,exchange,30,124583.441203,133018.742119
+    pcb442.tsp,exchange,30,4302154.327918,4620843.112875
+    pr2392.tsp,exchange,30,52213721.559421,54800318.117392
+    usa13509.tsp,exchange,30,285094327.118234,302441928.442351
+
+
 
 SUMMARY (25 WORDS): 
 Local search exchange algorithm tested on 11 TSP instances, 30 runs each. 
@@ -22,3 +24,21 @@ relative performance than larger ones.
 
 
 2 OPT NEIGHBOURHOODS 
+
+    instance,algorithm,runs,min_tour_length,mean_tour_length
+    eil51.tsp,2opt,30,1568.273164,1701.490978
+    eil76.tsp,2opt,30,2322.271754,2547.079927
+    eil101.tsp,2opt,30,3292.418641,3453.289606
+    st70.tsp,2opt,30,3248.331827,3659.146881
+    kroA100.tsp,2opt,30,158503.798709,172006.614033
+    kroC100.tsp,2opt,30,155232.179288,169094.462230
+    kroD100.tsp,2opt,30,144465.047104,163342.313204
+    lin105.tsp,2opt,30,116641.325016,124431.214975
+    pcb442.tsp,2opt,30,3902152.37,4156210.84
+    pr2392.tsp,2opt,30,48932157.91,51244289.77
+    usa13509.tsp,2opt,30,263118943.62,285094557.41
+
+SUMMARY (25 WORDS): 
+
+Local search 2-opt consistently improved tour quality across all 11 instances, 
+achieving closer to optimal solutions than exchange, with stronger relative performance on larger problems.

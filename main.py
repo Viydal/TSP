@@ -1,10 +1,20 @@
 import tsp
+import os
 from individual import Individual
 from population import Population
 from Local_Search import local_search
 import individual
 import population
 
+import os
+import sys
+import random
+import statistics
+from datetime import datetime
+
+# your modules
+import tsp
+from individual import Individual 
 if __name__ == "__main__":
     # travel = tsp.TSP("st70.tsp")
     # tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")
@@ -51,10 +61,11 @@ if __name__ == "__main__":
     path = ind.getPath()  # Make sure your Individual class has getPath()
     print("Original path cost:", tsp_instance.pathCost(path), "\n")
 
-    # Example of using local search ---------------------------------BRIAN 
+    # EXCHANGE LOCAL SEARCH 
     # print("Performing local search (Exchange)...")
     # improved_path = local_search.LocalSearch.local_search_exchange(path, tsp_instance)
 
+    #2 OPT LOCAL SEARCH
     print("Performing 2-opt local search...")
     improved_path_2opt = local_search.LocalSearch.local_search_2opt(path, tsp_instance)
 
@@ -62,7 +73,76 @@ if __name__ == "__main__":
     population = population.Population(tsp_instance, 50)
 
     individualList = population.getPopulation()
-    nextGen = population.elitism()
+    # nextGen = population.elitism()
 
     # for i in range(len(nextGen)):
     #     print(nextGen[i].cost)
+
+
+###########################################
+import os
+import random
+import statistics as stats
+
+import tsp
+from individual import Individual
+
+
+# Just the instances that work 
+INSTANCES = [
+    "eil51.tsp", "eil76.tsp", "eil101.tsp", "st70.tsp",
+    "kroA100.tsp", "kroC100.tsp", "kroD100.tsp", "lin105.tsp"
+]
+
+def main():
+    # Create results directory
+    os.makedirs("results", exist_ok=True)
+    
+    # Write results header
+    with open("results/local_search.txt", "w") as f:
+        f.write("instance,algorithm,runs,min_tour_length,mean_tour_length\n")
+    
+    # Process each instance
+    for instance_file in INSTANCES:
+        print(f"\n=== {instance_file} ===")
+        
+        # Load TSP instance
+        tsp_instance = tsp.TSP(f"tsp_instances/{instance_file}")
+        
+        # Run exchange algorithm 30 times
+        costs = []
+        for run in range(30):
+            # Create random individual
+            random.seed()  # Fresh randomness each run
+            ind = Individual(tsp_instance)
+            path = ind.getPath()
+            
+            # Apply local search exchange
+            improved_path = local_search.LocalSearch.local_search_2opt(path, tsp_instance)
+            
+            # Handle case where function returns None (modifies in-place)
+            if improved_path is None:
+                improved_path = path
+            
+            # Calculate cost and store
+            cost = tsp_instance.pathCost(improved_path)
+            costs.append(cost)
+            
+            # Progress indicator
+            if (run + 1) % 10 == 0:
+                print(f"  Run {run + 1}/30 complete")
+        
+        # Calculate min and mean
+        min_cost = min(costs)
+        mean_cost = stats.fmean(costs)
+        
+        print(f"  Min: {min_cost:.6f}, Mean: {mean_cost:.6f}")
+        
+        # Write to results file
+        with open("results/local_search.txt", "a") as f:
+            f.write(f"{instance_file},2opt,30,{min_cost:.6f},{mean_cost:.6f}\n")
+    
+    print(f"\nDone! Results written to results/local_search.txt")
+
+if __name__ == "__main__":
+    main()
