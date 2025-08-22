@@ -29,7 +29,7 @@ class Individual:
 
         self.evaluate()
 
-        print(f"Swapped cities {i}, and {j}\n")
+        # print(f"Swapped cities {i}, and {j}\n")
 
     def inversion(self, i=None, j=None):
         if i == None or j == None:

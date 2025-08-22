@@ -72,7 +72,7 @@ class Population:
         start = random.randint(0, path_length - 1)
         end = random.randint(start, path_length - 1)
 
-        print(f"Performing order crossover on index {start} to index {end}\n")
+        # print(f"Performing order crossover on index {start} to index {end}\n")
 
         child1 = [None] * path_length
         child2 = [None] * path_length
@@ -95,7 +95,7 @@ class Population:
                 child1[position] = remaining_cities[counter]
                 counter = counter + 1
 
-        print("child1 order crossover complete.\n")
+        # print("child1 order crossover complete.\n")
 
         remaining_cities = []
 
@@ -119,7 +119,7 @@ class Population:
         child2_individual.path = child2
         child2_individual.evaluate()
 
-        print("child2 order crossover complete.\n")
+        # print("child2 order crossover complete.\n")
 
         return child1_individual, child2_individual
 
@@ -129,7 +129,7 @@ class Population:
         start = random.randint(0, path_length - 1)
         end = random.randint(start, path_length - 1)
 
-        print(f"Performing PMX crossover on index {start} to index {end}\n")
+        # print(f"Performing PMX crossover on index {start} to index {end}\n")
 
         child1 = [None] * path_length
         child2 = [None] * path_length

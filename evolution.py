@@ -10,38 +10,35 @@ class Evolution:
             nextGeneration = []
             nextGeneration.extend(population.elitism())
             
-            for i in range(len(nextGeneration)):
-                print(nextGeneration[i])
-            
             # Future children
-            nextChildren = []
+            childrenPool = []
             
             # Create mating pool of individuals for next generation
             matingPool = []
-            for i in range(population.size - len(nextGeneration)):
+            for j in range(population.size - len(nextGeneration)):
                 matingPool.append(population.tournament_Selection())
             
             # Shuffle mating pool
             random.shuffle(matingPool)
             
             # Perform crossover for each pair of individuals in the mating pool
-            for i in range(0, len(matingPool), 2):
-                child1, child2 = population.performCrossover(matingPool[i], matingPool[i + 1], crossover_type="order")
-                nextChildren.append(child1)
-                nextChildren.append(child2)
+            for j in range(0, len(matingPool), 2):
+                child1, child2 = population.performCrossover(matingPool[j], matingPool[j + 1], crossover_type="order")
+                childrenPool.append(child1)
+                childrenPool.append(child2)
             
             # Perform mutation on each individual in the mating pool   
-            for i in range(len(nextChildren) - 1):
-                nextChildren[i] = nextChildren[i].performMutation()
+            for j in range(len(childrenPool) - 1):
+                childrenPool[j] = childrenPool[j].performMutation()
             
             # New population
-            nextGeneration.extend(nextChildren)
+            nextGeneration.extend(childrenPool)
             population.updatePopulation(nextGeneration)
             
-            print(f"population size of: {population.size}")
-            print(f"best path with cost: {population.bestPathCost()}")
+            if i % 100 == 0:
+                print(f"generation: {i} - best path with cost: {population.bestPathCost()}")
             
-            # time.sleep(1)
+        return population.bestPathCost()
 
     def EA2():
         pass
