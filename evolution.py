@@ -40,8 +40,27 @@ class Evolution:
 
         return population.getBest()
 
-    def EA2():
-        pass
+    def EA2(population, generationCount=20000):
+        for gen in range(generationCount):
+            
+            # Parent selection
+            parent1 = population.tournament_Selection()
+            parent2 = population.tournament_Selection()
+            
+            # Crossover and mutation
+            child1, child2 = population.performCrossover(parent1, parent2, crossover_type="order")
+            child = random.choice([child1, child2])
+            child = child.performMutation(mutation_type="insert")
+            
+            # replace worst
+            worst = max(population.individuals, key=lambda ind: ind.cost)
+            population.individuals.remove(worst)
+            population.individuals.append(child)
+            
+            if gen % 100 == 0:
+                print(f"Generation {gen} - best cost: {population.bestPathCost()}")
+        
+        return population.getBest()
 
     def EA3():
         pass
