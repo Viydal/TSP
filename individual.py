@@ -86,8 +86,6 @@ class Individual:
         random_number = random.random()
         if (random_number > mutation_probability):
             return self
-        currentPath = self.path.copy()
-        currentCost = self.evaluate()
 
         if mutation_type == "swap":
             self.swap()
@@ -101,8 +99,6 @@ class Individual:
             print("Invalid mutation operation.")
 
         # Take and update mutated individual
-        self.path = currentPath
-        self.cost = currentCost
         self.evaluate()
 
         return self
