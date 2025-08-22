@@ -3,6 +3,7 @@ import random
 import copy
 import math
 
+
 class Population:
     def __init__(self, tsp, size, mutation=None):
         self.individuals = []
@@ -21,18 +22,37 @@ class Population:
                 min = individual
         return min
     
-    def performCrossover(self, parent1, parent2, mutation=None):
-        if mutation == "order":
+    def bestPathCost(self):
+        min = None
+        for individual in self.individuals:
+            if (min == None):
+                min = individual
+            elif individual.evaluate() < min.cost:
+                min = individual
+        return min.cost
+
+    def performCrossover(self, parent1, parent2, crossover_probability=0.8, crossover_type="order"):
+        # Should crossover occur, if not return parents without modification
+        random_number = random.random()
+        if (random_number > crossover_probability):
+            return parent1, parent2
+
+        # If crossover should occur, perform crossover and return children
+        if crossover_type == "order":
             child1, child2 = self.orderCrossover(parent1, parent2)
-        elif mutation == "pmx":
+        elif crossover_type == "pmx":
             child1, child2 = self.PMXCrossover(parent1, parent2)
-        elif mutation == "cycle":
+        elif crossover_type == "cycle":
             child1, child2 = self.cycleCrossover(parent1, parent2)
         else:
             print("Invalid crossover operation.")
-            
+
         return child1, child2
     
+    def updatePopulation(self, newPopulation: list[Individual]):
+        self.individuals = newPopulation
+        self.size = len(self.individuals)
+
     def sortPopulation(self):
         individuals = self.individuals
         # Double for loop sorting the population by fitness
@@ -53,7 +73,7 @@ class Population:
         start = random.randint(0, path_length - 1)
         end = random.randint(start, path_length - 1)
 
-        print(f"Performing order crossover on index {start} to index {end}\n")
+        # print(f"Performing order crossover on index {start} to index {end}\n")
 
         child1 = [None] * path_length
         child2 = [None] * path_length
@@ -64,10 +84,10 @@ class Population:
 
         remaining_cities = []
 
-        for i in range(end + 1, len(parent2.path) + start):
-            i = i % len(parent2.path)
-            if parent2.path[i] not in child1:
-                remaining_cities.append(parent2.path[i])
+        for i in range(path_length):
+            pos = i % len(parent2.path)
+            if parent2.path[pos] not in child1:
+                remaining_cities.append(parent2.path[pos])
 
         counter = 0
         for i in range(path_length):
@@ -76,14 +96,14 @@ class Population:
                 child1[position] = remaining_cities[counter]
                 counter = counter + 1
 
-        print("child1 order crossover complete.\n")
+        # print("child1 order crossover complete.\n")
 
         remaining_cities = []
 
-        for i in range(end + 1, len(parent1.path) + start):
-            i = i % len(parent1.path)
-            if parent1.path[i] not in child2:
-                remaining_cities.append(parent1.path[i])
+        for i in range(path_length):
+            pos = i % len(parent1.path)
+            if parent1.path[pos] not in child2:
+                remaining_cities.append(parent1.path[pos])
 
         counter = 0
         for i in range(path_length):
@@ -91,19 +111,18 @@ class Population:
             if child2[position] is None and counter < len(remaining_cities):
                 child2[position] = remaining_cities[counter]
                 counter = counter + 1
-        
+
         child1_individual = Individual(self.tsp)
         child1_individual.path = child1
         child1_individual.evaluate()
-        
+
         child2_individual = Individual(self.tsp)
         child2_individual.path = child2
         child2_individual.evaluate()
-        
-        print("child2 order crossover complete.\n")
-        
+
+        # print("child2 order crossover complete.\n")
+
         return child1_individual, child2_individual
-        
 
     def PMXCrossover(self, parent1, parent2):
         path_length = len(parent1.path)
@@ -111,7 +130,7 @@ class Population:
         start = random.randint(0, path_length - 1)
         end = random.randint(start, path_length - 1)
 
-        print(f"Performing PMX crossover on index {start} to index {end}\n")
+        # print(f"Performing PMX crossover on index {start} to index {end}\n")
 
         child1 = [None] * path_length
         child2 = [None] * path_length
@@ -153,17 +172,17 @@ class Population:
         for i in range(len(child1)):
             if child2[i] is None:
                 child2[i] = parent1.path[i]
-                
+
         child1_individual = Individual(self.tsp)
         child1_individual.path = child1
         child1_individual.evaluate()
-        
+
         child2_individual = Individual(self.tsp)
         child2_individual.path = child2
         child2_individual.evaluate()
 
         print("child2 PMX crossover complete.\n")
-        
+
         return child1_individual, child2_individual
 
     def cycleCrossover(self, parent1, parent2):
@@ -237,33 +256,24 @@ class Population:
         for i in range(len(child2)):
             if child2[i] is None:
                 child2[i] = parent1.path[i]
-        
+
         child1_individual = Individual(self.tsp)
         child1_individual.path = child1
         child1_individual.evaluate()
-        
+
         child2_individual = Individual(self.tsp)
         child2_individual.path = child2
         child2_individual.evaluate()
 
         print("Cycle crossover complete.\n")
-        
+
         return child1_individual, child2_individual
 
-    # Copy N individuals over to next generation - fill rest with 60% crossover and 40% mutation
-    def elitism(self, elite_percentage=0.1, crossover_percentage=0.75, mutation_percentage=0.15, crossover_method="order", mutation_method="swap"):
-        # Error checking
-        if elite_percentage + crossover_percentage + mutation_percentage != 1:
-            print(f"Invalid parameters, proposed population percentage not equal to 1: {elite_percentage + crossover_percentage + mutation_percentage}")
-            return
-
+    # Copy N individuals over to next generation and return the partially filled next generation
+    def elitism(self, elite_percentage=0.1):
         elite_count = int(elite_percentage * self.size)
-        crossover_count = int(crossover_percentage * self.size)
-        mutation_count = int(self.size - elite_count - crossover_count)
-
-        print(elite_count)
-        print(crossover_count)
-        print(mutation_count)
+        if not elite_count % 2 == 0:
+            elite_count += 1
 
         self.sortPopulation()
 
@@ -272,31 +282,7 @@ class Population:
         for i in range(elite_count):
             nextGeneration.append(self.individuals[i])
 
-        # Generate a percentage of the population, individuals through crossover
-        for i in range(crossover_count):
-            parent1 = self.tournamentSelection()
-            parent2 = self.tournamentSelection()
-            
-            child1, child2 = self.performCrossover(parent1, parent2, crossover_method)
-            
-            nextGeneration.append(child1, child2)
-
-        # Fill remaining with randomly selected mutated individuals
-        for i in range(mutation_count):
-            randomIndividual = random.choice(self.individuals)
-            mutation = randomIndividual.performMutation(mutation_method)
-            nextGeneration.append(mutation)
-        
-        for i in range(len(nextGeneration)):
-            print(nextGeneration[i].cost)
-        print()
-        
         return nextGeneration
-    
-    def tournamentSelection():
-        # filler code
-        pass
-    
 
     def fitness_proportionalSelection(self, PopulationPerRoll: int = 10, rolls: int = 3):
         self.sortPopulation()
@@ -322,4 +308,18 @@ class Population:
                 newPopulation.append(self.individuals[index])
         return newPopulation
 
-            
+    # tournament selection for parent selection
+    def tournament_Selection(self, k=3):
+        # Randomly select k individuals from the population
+        tournament = random.sample(self.individuals, k)
+        # Get the individual with the lowest cost
+        winner = min(tournament, key=lambda ind: ind.cost)
+        return winner
+
+    # Informal tournament selection for parent selection
+    # This method selects two parents using tournament selection
+    # Not sure if right
+    def informal_tournament_selection(self, k=3):
+        parent1 = self.tournament_Selection(k)
+        parent2 = self.tournament_Selection(k)
+        return parent1, parent2
