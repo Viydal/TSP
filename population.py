@@ -6,26 +6,23 @@ import time
 
 
 class Population:
-    def __init__(self, tsp, path_costs=None, size=50):
+    def __init__(self, tsp, previous_path_costs=None, size=50):
         self.individuals = []
         self.size = size
         self.tsp = tsp
         for i in range(size):
             self.individuals.append(Individual(tsp))
             
-        if path_costs is None:
+        if previous_path_costs is None:
             self.path_costs = {}
         else:
-            self.path_costs = path_costs
+            self.path_costs = previous_path_costs
 
     def getBest(self):
         """Returns the individual with the lowest cost."""
         if not self.individuals:
             return None
-        
-        for individual in self.individuals:
-            self.efficient_evaluate(individual)
-            
+           
         return min(self.individuals, key=lambda ind: ind.cost)
 
     def bestPathCost(self):
@@ -55,6 +52,9 @@ class Population:
             child1, child2 = self.cycleCrossover(parent1, parent2)
         else:
             print("Invalid crossover operation.")
+            
+        self.efficient_evaluate(child1)
+        self.efficient_evaluate(child2)
 
         return child1, child2
 
@@ -63,9 +63,6 @@ class Population:
         self.size = len(self.individuals)
 
     def sortPopulation(self):
-        for individual in self.individuals:
-            self.efficient_evaluate(individual)
-            
         self.individuals.sort(key=lambda ind: ind.cost)
         return self.individuals
 
@@ -119,11 +116,9 @@ class Population:
 
         child1_individual = Individual(self.tsp)
         child1_individual.path = child1
-        self.efficient_evaluate(child1_individual)
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = child2
-        self.efficient_evaluate(child2_individual)
 
         # print("child2 order crossover complete.\n")
 
@@ -209,11 +204,9 @@ class Population:
 
         child1_individual = Individual(self.tsp)
         child1_individual.path = individual1
-        self.efficient_evaluate(child1_individual)
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = individual2
-        self.efficient_evaluate(child2_individual)
 
         return child1_individual, child2_individual
 
@@ -313,11 +306,9 @@ class Population:
 
         child1_individual = Individual(self.tsp)
         child1_individual.path = individual1
-        self.efficient_evaluate(child1_individual)
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = individual2
-        self.efficient_evaluate(child2_individual)
         
         return child1_individual, child2_individual
 
