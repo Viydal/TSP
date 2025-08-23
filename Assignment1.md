@@ -1,7 +1,9 @@
+Main Loop - Riley  ✅  
+
 TSP Class - Bryce  ✅  
 Local Seach: Jump - Asad  ✅  
 Local Search: Exchange - Brian  ✅  
-Local Search: 2-opt neightborhoods - Brian  
+Local Search: 2-opt neightborhoods - Brian  ✅    
 
 Construct EVP Individual Class - Rory  ✅  
 EVP: insert - Bryce  ✅  
@@ -14,8 +16,7 @@ EVP: Cycle Crossover - Riley  ✅
 EVP: Edge Recombination - Rory  ✅  
 
 Selection: fitness-proportional - Bryce  
-Selection: tournament selection 1 - Brian  ✅  
-Selection: tournament selection 2 - Brian  
+Selection: tournament selection 1 - Brian  ✅ 
 Selection: Elitism - Riley  ✅  
 
 Evolutionary Algorithm: 1 - Riley  ✅    
@@ -24,7 +25,7 @@ Evolutionary Algorithm: 3 - Bryce
 
 Inver-over 
 
-results/local_search.txt  
+results/local_search.txt
 results/local_search_analysis.txt  
 results/your_EA.txt  
 results/inverover.txt  

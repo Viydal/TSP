@@ -2,25 +2,45 @@ import tsp
 import individual
 import population
 import evolution
-
 import os
-import sys
-import random
-import statistics
-from datetime import datetime
 
-# your modules
-import tsp
-from individual import Individual 
 if __name__ == "__main__":
-
-
-    # Load a TSP instance
-    tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")  # Update path as needed
-
-    # Create population of size 50
-    population = population.Population(tsp_instance, 100)
-
-    solution1 = evolution.Evolution.EA1(population)
-    solution1.printPath()
-    print(f"best solution with cost: {solution1.evaluate()}")
+    tsp_files = os.listdir("tsp_instances")
+    tsp_files.sort()
+    
+    population_sizes = [20, 50, 100, 200]
+    
+    generation_counts = [2000, 5000, 10000, 20000]
+    
+    algorithms = {
+        'EA1': evolution.Evolution.EA1,
+        'EA2': evolution.Evolution.EA2,
+        'EA3': evolution.Evolution.EA3
+    }
+    
+    for algorithm in algorithms:
+        print(f"Algorithm: {algorithm}")
+        for tsp_file in tsp_files:
+            print(f"Instance: {tsp_file}\n")
+            
+            for population_size in population_sizes:
+                print(f"Population: {population_size}\n")
+                print("Generations | Best Cost")
+                
+                tsp_instance = tsp.TSP(f"tsp_instances/{tsp_file}")
+                pop = population.Population(tsp_instance, population_size)
+                
+                best_solution = None
+                current_generation = 0
+                for generation_count in generation_counts:
+                    generations_to_run = generation_count - current_generation
+                    
+                    algorithm_version = algorithms[algorithm]
+                    solution = algorithm_version(pop, generations_to_run, global_best=best_solution)
+                    
+                    print(f"{generation_count} | {round(solution.evaluate(), 2)}")
+                    
+                    current_generation = generation_count
+                    best_solution = solution
+                    
+                print()

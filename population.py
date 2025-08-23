@@ -6,31 +6,39 @@ import time
 
 
 class Population:
-    def __init__(self, tsp, size, mutation=None):
+    def __init__(self, tsp, path_costs=None, size=50):
         self.individuals = []
         self.size = size
         self.tsp = tsp
         for i in range(size):
             self.individuals.append(Individual(tsp))
+            
+        if path_costs is None:
+            self.path_costs = {}
+        else:
+            self.path_costs = path_costs
 
     def getBest(self):
         """Returns the individual with the lowest cost."""
-        min = None
+        if not self.individuals:
+            return None
+        
         for individual in self.individuals:
-            if (min == None):
-                min = individual
-            elif individual.evaluate() < min.cost:
-                min = individual
-        return min
+            self.efficient_evaluate(individual)
+            
+        return min(self.individuals, key=lambda ind: ind.cost)
 
     def bestPathCost(self):
-        min = None
-        for individual in self.individuals:
-            if (min == None):
-                min = individual
-            elif individual.evaluate() < min.cost:
-                min = individual
-        return min.cost
+        best_cost = self.getBest()
+        return best_cost
+    
+    def efficient_evaluate(self, individual: Individual):
+        key = tuple(individual.path)
+        if key not in self.path_costs:
+            individual.evaluate()
+            self.path_costs[key] = individual.cost
+        else:
+            individual.cost = self.path_costs[key]
 
     def performCrossover(self, parent1, parent2, crossover_probability=0.8, crossover_type="order"):
         # Should crossover occur, if not return parents without modification
@@ -55,15 +63,11 @@ class Population:
         self.size = len(self.individuals)
 
     def sortPopulation(self):
-        individuals = self.individuals
-        # Double for loop sorting the population by fitness
-        for i in range(len(individuals)):
-            for j in range(len(individuals) - 1):
-                if individuals[j].cost > individuals[j + 1].cost:
-                    temp = individuals[j]
-                    individuals[j] = individuals[j + 1]
-                    individuals[j + 1] = temp
-        return individuals
+        for individual in self.individuals:
+            self.efficient_evaluate(individual)
+            
+        self.individuals.sort(key=lambda ind: ind.cost)
+        return self.individuals
 
     def getPopulation(self):
         return self.individuals
@@ -115,11 +119,11 @@ class Population:
 
         child1_individual = Individual(self.tsp)
         child1_individual.path = child1
-        child1_individual.evaluate()
+        self.efficient_evaluate(child1_individual)
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = child2
-        child2_individual.evaluate()
+        self.efficient_evaluate(child2_individual)
 
         # print("child2 order crossover complete.\n")
 
@@ -205,11 +209,11 @@ class Population:
 
         child1_individual = Individual(self.tsp)
         child1_individual.path = individual1
-        child1_individual.evaluate()
+        self.efficient_evaluate(child1_individual)
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = individual2
-        child2_individual.evaluate()
+        self.efficient_evaluate(child2_individual)
 
         return child1_individual, child2_individual
 
@@ -309,11 +313,11 @@ class Population:
 
         child1_individual = Individual(self.tsp)
         child1_individual.path = individual1
-        child1_individual.evaluate()
+        self.efficient_evaluate(child1_individual)
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = individual2
-        child2_individual.evaluate()
+        self.efficient_evaluate(child2_individual)
         
         return child1_individual, child2_individual
 
