@@ -49,16 +49,23 @@ class Individual:
 
         # print(f"Inverted cities from {i} to {j}\n")
 
-    def insert(self, i: int | None = None, j: int | None = None):
+    def fixCityIndex(self, i: int | None, j: int | None):
         if i is None and j is None:
             i = random.randint(0, len(self.path) - 1)
             j = random.randint(0, len(self.path) - 1)
             while i == j:
                 j = random.randint(0, len(self.path) - 1)
-        if i == None:
+        elif i is None:
             i = random.randint(0, len(self.path) - 1)
-        if j == None:
-            j = random.randint(0, len(self.path) - 1)
+            while i == j:
+                i = random.randint(0, len(self.path) - 1)
+        elif j is None:
+            while i == j:
+                j =  random.randint(0, len(self.path) - 1)
+        return (i,j)
+
+    def insert(self, i: int | None = None, j: int | None = None):
+        i,j = self.fixCityIndex(i,j)
         if i > j:
             i, j = j, i  # i is now always smaller than j
 
@@ -67,13 +74,13 @@ class Individual:
 
         # print(f"Inserted city {j} to {i}\n")
 
-    # Scramble function doesn't work
     def scramble(self, i: int | None = None, j: int | None = None):
+        i,j = self.fixCityIndex(i,j)
         section = []
-        for _i in range(j-i):
+        for _ in range(j-i):
             section.append(self.path.pop(i))
         while len(section) > 0:
-            rand = random.randint(0, len(section))
+            rand = random.randint(0, len(section)-1)
             self.path.insert(i, section.pop(rand))
 
         # print(f"Cities scrambled between {i} and {j}")
