@@ -336,28 +336,39 @@ class Population:
 
         return nextGeneration
 
-    def fitness_proportionalSelection(self, PopulationPerRoll: int = 10, rolls: int = 3):
+    def fitness_proportionalSelection(self, PopulationPerRoll: int = 1, rolls: int = 3):
         self.sortPopulation()
         newPopulation = []
         fitness = []
         totalFitnessSum = 0
         for i in self.individuals:
-            fitness.append(math.floor(i.tsp.pathCost()))
-            totalFitnessSum += fitness[-1]
-        for i in rolls:
+            fitness.append(math.ceil(i.cost))
+            totalFitnessSum += math.floor(i.cost)
+        # For larger numbers the highest fitness individual becomes gradually less chosen.
+        # To fix this for a 200 large population, about 10% of the last item needs to be added onto the total Fitness Sum.
+        # Using this an approximate for other values has been created and checked to be approximatley accurate.
+        totalFitnessSum = math.ceil(totalFitnessSum + fitness[-1]*(self.size/2000))
+        for i in range(rolls):
             rand = random.randint(0, totalFitnessSum)
             WinningRolls = []
-            for j in PopulationPerRoll:
+            for j in range(PopulationPerRoll):
                 WinningRolls.append(rand + j*totalFitnessSum/PopulationPerRoll)
                 if WinningRolls[-1] > totalFitnessSum:
                     WinningRolls[-1] -= totalFitnessSum
             for indiv in WinningRolls:
                 sum = 0
                 index = 0
-                while sum < indiv:
+                while sum < indiv and index < len(fitness):
                     sum += fitness[index]
                     index += 1
-                newPopulation.append(self.individuals[index])
+                if sum < indiv:
+                    sum += fitness[-1]
+                if index > 0:
+                    index -= 1
+                #index -= 1
+                #print(index % len(self.individuals))
+                newPopulation.append(index) #% len(self.individuals))
+                #newPopulation.append(self.individuals[index % len(self.individuals)])
         return newPopulation
 
     # tournament selection for parent selection
