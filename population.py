@@ -367,8 +367,7 @@ class Population:
                     index -= 1
                 #index -= 1
                 #print(index % len(self.individuals))
-                newPopulation.append(index) #% len(self.individuals))
-                #newPopulation.append(self.individuals[index % len(self.individuals)])
+                newPopulation.append(self.individuals[index % len(self.individuals)])
         return newPopulation
 
     # tournament selection for parent selection
