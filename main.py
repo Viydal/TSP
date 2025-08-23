@@ -3,7 +3,18 @@ import individual
 import population
 import evolution
 
+import os
+import sys
+import random
+import statistics
+from datetime import datetime
+
+# your modules
+import tsp
+from individual import Individual 
 if __name__ == "__main__":
+
+
     # Load a TSP instance
     tsp_instance = tsp.TSP("tsp_instances/eil101.tsp")  # Update path as needed
 
