@@ -51,27 +51,33 @@ class Evolution:
         return global_best
 
     # SSGA
-    def EA2(population, generationCount=20000):
-        for gen in range(generationCount):
+    def EA2(population: population.Population, generationCount=20000, global_best=None):
+        if global_best is None:
+            initial_best = population.getBest()
+            initial_best.evaluate()
+            global_best = copy.deepcopy(initial_best)
             
-            # Parent selection
+        for gen in range(generationCount):
             parent1 = population.tournament_Selection()
             parent2 = population.tournament_Selection()
             
-            # Crossover and mutation
             child1, child2 = population.performCrossover(parent1, parent2, crossover_type="order")
-            child = random.choice([child1, child2])
-            child = child.performMutation(mutation_type="insert")
             
-            # replace worst
-            worst = max(population.individuals, key=lambda ind: ind.cost)
-            population.individuals.remove(worst)
-            population.individuals.append(child)
+            child1 = child1.performMutation(mutation_type="insert")
+            child2 = child2.performMutation(mutation_type="insert")
             
-            if gen % 100 == 0:
-                print(f"Generation {gen} - best cost: {population.bestPathCost()}")
+            population.sortPopulation()
+            
+            population.individuals = population.individuals[:-2] + [child1, child2]
+            
+            currentBest = population.getBest()
+            if currentBest.cost < global_best.cost:
+                global_best = copy.deepcopy(currentBest)
+            
+            # if gen % 100 == 0:
+            #     print(f"generation: {gen} - best path with cost: {round(global_best.cost, 2)}")
         
-        return population.getBest()
+        return global_best
 
     def EA3():
         pass

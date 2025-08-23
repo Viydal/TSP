@@ -22,13 +22,13 @@ if __name__ == "__main__":
         print(f"Algorithm: {algorithm}")
         for tsp_file in tsp_files:
             print(f"Instance: {tsp_file}\n")
-            
+            path_costs = {}
             for population_size in population_sizes:
                 print(f"Population: {population_size}\n")
                 print("Generations | Best Cost")
                 
                 tsp_instance = tsp.TSP(f"tsp_instances/{tsp_file}")
-                pop = population.Population(tsp_instance, population_size)
+                pop = population.Population(tsp_instance, size=population_size, previous_path_costs=path_costs)
                 
                 best_solution = None
                 current_generation = 0

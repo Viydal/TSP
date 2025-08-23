@@ -10,6 +10,7 @@ EVP: insert - Bryce  ✅
 EVP: swap - Riley  ✅  
 EVP: inversion - Rory  ✅  
 
+Construct EVP Population Class  ✅  
 EVP: Order Crossover - Riley  ✅  
 EVP: PMX Crossover - Riley  ✅  
 EVP: Cycle Crossover - Riley  ✅    

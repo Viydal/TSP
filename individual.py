@@ -27,10 +27,6 @@ class Individual:
         self.path[i] = self.path[j]
         self.path[j] = temp
 
-        self.evaluate()
-
-        # print(f"Swapped cities {i}, and {j}\n")
-
     def inversion(self, i=None, j=None):
         if i == None or j == None:
             i = random.randint(0, len(self.path) - 1)
@@ -43,9 +39,7 @@ class Individual:
         # Dist betwenn i & j
         sub_length = (j - i + 1)
         for k in range(sub_length // 2):
-            self.path[i + k], self.path[j -
-                                        k] = self.path[j - k], self.path[i + k]
-        self.evaluate()
+            self.path[i + k], self.path[j - k] = self.path[j - k], self.path[i + k]
 
         # print(f"Inverted cities from {i} to {j}\n")
 
