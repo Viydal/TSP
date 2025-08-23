@@ -1,0 +1,545 @@
+Algorithm: EA1
+Instance: eil101.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 1053.87
+5000 | 986.85
+10000 | 986.85
+20000 | 986.24
+
+Population: 50
+
+Generations | Best Cost
+2000 | 878.05
+5000 | 778.55
+10000 | 735.41
+20000 | 726.79
+
+Population: 100
+
+Generations | Best Cost
+2000 | 745.93
+5000 | 713.45
+10000 | 702.29
+20000 | 700.0
+
+Population: 200
+
+Generations | Best Cost
+2000 | 730.28
+5000 | 700.14
+10000 | 697.81
+20000 | 695.28
+
+Instance: eil51.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 535.46
+5000 | 506.01
+10000 | 506.01
+20000 | 493.49
+
+Population: 50
+
+Generations | Best Cost
+2000 | 474.68
+5000 | 469.88
+10000 | 460.31
+20000 | 453.2
+
+Population: 100
+
+Generations | Best Cost
+2000 | 464.76
+5000 | 455.75
+10000 | 455.75
+20000 | 455.75
+
+Population: 200
+
+Generations | Best Cost
+2000 | 477.6
+5000 | 468.6
+10000 | 463.94
+20000 | 442.89
+
+Instance: eil76.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 788.01
+5000 | 788.01
+10000 | 774.03
+20000 | 764.65
+
+Population: 50
+
+Generations | Best Cost
+2000 | 664.26
+5000 | 606.04
+10000 | 606.04
+20000 | 592.66
+
+Population: 100
+
+Generations | Best Cost
+2000 | 656.19
+5000 | 620.24
+10000 | 582.15
+20000 | 576.34
+
+Population: 200
+
+Generations | Best Cost
+2000 | 630.67
+5000 | 601.57
+10000 | 592.53
+20000 | 592.53
+
+Instance: kroA100.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 44309.7
+5000 | 41267.51
+10000 | 40568.63
+20000 | 37933.36
+
+Population: 50
+
+Generations | Best Cost
+2000 | 30527.63
+5000 | 27714.61
+10000 | 26243.15
+20000 | 25182.19
+
+Population: 100
+
+Generations | Best Cost
+2000 | 28890.81
+5000 | 25216.1
+10000 | 23052.82
+20000 | 23008.18
+
+Population: 200
+
+Generations | Best Cost
+2000 | 25068.51
+5000 | 24503.32
+10000 | 23327.45
+20000 | 23029.98
+
+Instance: kroC100.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 45115.72
+5000 | 37430.15
+10000 | 37430.15
+20000 | 37430.15
+
+Population: 50
+
+Generations | Best Cost
+2000 | 32305.7
+5000 | 30291.35
+10000 | 28865.72
+20000 | 27509.02
+
+Population: 100
+
+Generations | Best Cost
+2000 | 27560.24
+5000 | 25065.12
+10000 | 23136.29
+20000 | 22673.02
+
+Population: 200
+
+Generations | Best Cost
+2000 | 26232.15
+5000 | 23932.15
+10000 | 23307.06
+20000 | 22329.93
+
+Instance: kroD100.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 42156.32
+5000 | 40962.81
+10000 | 40738.38
+20000 | 37531.56
+
+Population: 50
+
+Generations | Best Cost
+2000 | 32216.45
+5000 | 28441.68
+10000 | 25035.88
+20000 | 24685.62
+
+Population: 100
+
+Generations | Best Cost
+2000 | 30019.65
+5000 | 25998.55
+10000 | 24087.28
+20000 | 24055.66
+
+Population: 200
+
+Generations | Best Cost
+2000 | 25417.11
+5000 | 23761.95
+10000 | 23156.08
+20000 | 23086.74
+
+Instance: lin105.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 30828.93
+5000 | 29391.57
+10000 | 27033.26
+20000 | 26191.45
+
+Population: 50
+
+Generations | Best Cost
+2000 | 21742.75
+5000 | 18558.43
+10000 | 16781.55
+20000 | 16781.55
+
+Population: 100
+
+Generations | Best Cost
+2000 | 18772.66
+5000 | 16636.62
+10000 | 16127.71
+20000 | 15957.66
+
+Population: 200
+
+Generations | Best Cost
+2000 | 16551.36
+5000 | 15582.51
+10000 | 15555.35
+20000 | 15412.41
+
+Instance: pcb442.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 278111.59
+5000 | 235504.89
+10000 | 222305.21
+20000 | 222305.21
+
+Population: 50
+
+Generations | Best Cost
+2000 | 215409.63
+5000 | 166319.62
+10000 | 141952.53
+20000 | 137000.23
+
+Population: 100
+
+Generations | Best Cost
+2000 | 186301.62
+5000 | 130697.94
+10000 | 109641.01
+20000 | 97862.53
+
+Population: 200
+
+Generations | Best Cost
+2000 | 157343.09
+5000 | 108476.47
+10000 | 93596.38
+20000 | 81716.11
+
+Algorithm: EA2
+Instance: eil101.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 1438.79
+5000 | 1215.7
+10000 | 1046.06
+20000 | 1029.18
+
+Population: 50
+
+Generations | Best Cost
+2000 | 1478.3
+5000 | 1248.87
+10000 | 1056.54
+20000 | 953.37
+
+Population: 100
+
+Generations | Best Cost
+2000 | 1624.55
+5000 | 1218.23
+10000 | 982.04
+20000 | 959.47
+
+Population: 200
+
+Generations | Best Cost
+2000 | 2022.98
+5000 | 1574.36
+10000 | 1231.56
+20000 | 956.86
+
+Instance: eil51.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 653.32
+5000 | 617.53
+10000 | 581.98
+20000 | 579.48
+
+Population: 50
+
+Generations | Best Cost
+2000 | 641.44
+5000 | 604.75
+10000 | 584.94
+20000 | 557.78
+
+Population: 100
+
+Generations | Best Cost
+2000 | 702.16
+5000 | 589.24
+10000 | 557.48
+20000 | 533.21
+
+Population: 200
+
+Generations | Best Cost
+2000 | 814.24
+5000 | 622.18
+10000 | 553.31
+20000 | 550.29
+
+Instance: eil76.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 1096.87
+5000 | 935.56
+10000 | 794.5
+20000 | 787.48
+
+Population: 50
+
+Generations | Best Cost
+2000 | 1049.61
+5000 | 933.5
+10000 | 889.26
+20000 | 847.6
+
+Population: 100
+
+Generations | Best Cost
+2000 | 1167.28
+5000 | 871.68
+10000 | 813.62
+20000 | 733.24
+
+Population: 200
+
+Generations | Best Cost
+2000 | 1381.25
+5000 | 1060.82
+10000 | 849.54
+20000 | 806.22
+
+Instance: kroA100.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 60929.94
+5000 | 53679.68
+10000 | 46402.86
+20000 | 41450.71
+
+Population: 50
+
+Generations | Best Cost
+2000 | 62723.8
+5000 | 53891.12
+10000 | 51457.27
+20000 | 39329.76
+
+Population: 100
+
+Generations | Best Cost
+2000 | 71859.96
+5000 | 53230.37
+10000 | 46090.97
+20000 | 37296.72
+
+Population: 200
+
+Generations | Best Cost
+2000 | 89871.41
+5000 | 60488.31
+10000 | 46630.08
+20000 | 34003.93
+
+Instance: kroC100.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 58997.12
+5000 | 49563.99
+10000 | 48173.87
+20000 | 40319.77
+
+Population: 50
+
+Generations | Best Cost
+2000 | 65987.42
+5000 | 47974.09
+10000 | 40792.46
+20000 | 35594.56
+
+Population: 100
+
+Generations | Best Cost
+2000 | 71659.38
+5000 | 53224.72
+10000 | 43759.44
+20000 | 41320.18
+
+Population: 200
+
+Generations | Best Cost
+2000 | 82328.14
+5000 | 58361.95
+10000 | 45126.67
+20000 | 32561.75
+
+Instance: kroD100.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 57903.07
+5000 | 49217.62
+10000 | 44667.73
+20000 | 39564.84
+
+Population: 50
+
+Generations | Best Cost
+2000 | 64838.2
+5000 | 49907.18
+10000 | 43936.6
+20000 | 36877.14
+
+Population: 100
+
+Generations | Best Cost
+2000 | 67912.14
+5000 | 49458.68
+10000 | 43222.45
+20000 | 41372.17
+
+Population: 200
+
+Generations | Best Cost
+2000 | 85666.76
+5000 | 60625.4
+10000 | 45562.99
+20000 | 38653.41
+
+Instance: lin105.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 42333.97
+5000 | 34769.52
+10000 | 29840.38
+20000 | 28773.28
+
+Population: 50
+
+Generations | Best Cost
+2000 | 44638.02
+5000 | 31633.38
+10000 | 31436.24
+20000 | 27679.24
+
+Population: 100
+
+Generations | Best Cost
+2000 | 49216.56
+5000 | 37361.83
+10000 | 29154.08
+20000 | 27117.81
+
+Population: 200
+
+Generations | Best Cost
+2000 | 66411.65
+5000 | 45424.26
+10000 | 34690.15
+20000 | 25572.24
+
+Instance: pcb442.tsp
+
+Population: 20
+
+Generations | Best Cost
+2000 | 447779.14
+5000 | 348600.42
+10000 | 299849.61
+20000 | 261062.74
+
+Population: 50
+
+Generations | Best Cost
+2000 | 494224.01
+5000 | 378926.4
+10000 | 309167.0
+20000 | 243668.83
+
+Population: 100
+
+Generations | Best Cost
+2000 | 538440.64
+5000 | 424829.26
+10000 | 339955.38
+20000 | 271327.71
+
+Population: 200
+
+Generations | Best Cost
+2000 | 596046.58
+5000 | 483609.51
+10000 | 396729.2
+20000 | 321799.49

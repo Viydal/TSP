@@ -16,7 +16,7 @@ EVP: PMX Crossover - Riley  ✅
 EVP: Cycle Crossover - Riley  ✅    
 EVP: Edge Recombination - Rory  ✅  
 
-Selection: fitness-proportional - Bryce  
+Selection: fitness-proportional - Bryce  ✅      
 Selection: tournament selection 1 - Brian  ✅ 
 Selection: Elitism - Riley  ✅  
 
@@ -24,10 +24,11 @@ Evolutionary Algorithm: 1 - Riley  ✅
 Evolutionary Algorithm: 2 - Asad  ✅    
 Evolutionary Algorithm: 3 - Bryce  
 
-Inver-over 
+Inver-over - Asad 
 
-results/local_search.txt
-results/local_search_analysis.txt  
-results/your_EA.txt  
-results/inverover.txt  
-results/your_EA_inverover_comparison.txt  
+results/local_search.txt - Brian & Asad 
+results/local_search_analysis.txt - Brian & Asad    
+results/your_EA.txt - Riley  ✅     
+results/your_EA_outcomes.txt - Riley  ✅      
+results/inverover.txt - Asad  
+results/your_EA_inverover_comparison.txt - Riley & Asad

@@ -13,7 +13,7 @@ if __name__ == "__main__":
     generation_counts = [2000, 5000, 10000, 20000]
     
     algorithms = {
-        'EA1': evolution.Evolution.EA1,
+        # 'EA1': evolution.Evolution.EA1,
         'EA2': evolution.Evolution.EA2,
         'EA3': evolution.Evolution.EA3
     }
