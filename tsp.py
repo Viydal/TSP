@@ -7,10 +7,10 @@ def dprint(val):
 
 
 class Point:
-    x: int
-    y: int
+    x: float
+    y: float
 
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
 
@@ -58,8 +58,8 @@ class TSP:
             # dprint(line)
             ex, x, y = line.split()
             ex = int(ex)
-            y = int(y)
-            x = int(x)
+            y = float(y)
+            x = float(x)
             self.Cities.append(City(Point(x, y), ex))
             line = f.readline().strip()
         # print(f.readline().strip())
