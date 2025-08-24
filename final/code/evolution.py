@@ -5,8 +5,17 @@ import copy
 
 
 class Evolution:
+    # General EA handler
+    def handleEA(self, population: population.Population, elites=0.1, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None, generation_gap=0.5, algorithm_type="EA1"):
+        if algorithm_type == "EA1":
+            return self.EA1(population, elites=elites, generationCount=generationCount, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
+        elif algorithm_type == "EA2":
+            return self.EA2(population, generationCount=generationCount, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
+        elif algorithm_type == "EA3":
+            return self.EA3(population, generationCount=generationCount, generation_gap=generation_gap, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
+
     # SGA (Simple Genetic Algorithm) with elitism
-    def EA1(population: population.Population, elites=0.1, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
+    def EA1(self, population: population.Population, elites=0.1, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
         # Pass global best between generations
         if global_best is None:
             initial_best = population.getBest()
@@ -37,7 +46,8 @@ class Evolution:
 
             # Perform mutation on each individual in the mating pool
             for j in range(len(childrenPool)):
-                childrenPool[j] = childrenPool[j].performMutation(mutation_type=mutation_method)
+                childrenPool[j] = childrenPool[j].performMutation(
+                    mutation_type=mutation_method)
 
             # New population
             nextGeneration.extend(childrenPool)
@@ -55,7 +65,7 @@ class Evolution:
         return global_best
 
     # SSGA
-    def EA2(population: population.Population, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
+    def EA2(self, population: population.Population, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
         # Pass global best between generations
         if global_best is None:
             initial_best = population.getBest()
@@ -75,7 +85,8 @@ class Evolution:
 
             population.sortPopulation()
 
-            population.individuals = population.individuals[:-2] + [child1, child2]
+            population.individuals = population.individuals[:-2] + [
+                child1, child2]
 
             currentBest = population.getBest()
             if currentBest.cost < global_best.cost:
@@ -87,7 +98,7 @@ class Evolution:
         return global_best
 
     # Generation Gap
-    def EA3(population: population.Population, generationCount=20000, generation_gap=0.5, crossover_method="order", mutation_method="insert", global_best=None):
+    def EA3(self, population: population.Population, generationCount=20000, generation_gap=0.5, crossover_method="order", mutation_method="insert", global_best=None):
         # Pass global best between generations
         if global_best is None:
             initial_best = population.getBest()
@@ -105,7 +116,8 @@ class Evolution:
         for gen in range(generationCount):
             # Sort and collect fittest individuals to pass on to next generation
             population.sortPopulation()
-            survivors = population.individuals[:population.size - num_to_replace]
+            survivors = population.individuals[:
+                                               population.size - num_to_replace]
 
             # Perform tournament selection to construct the mating pool
             matingPool = []
@@ -113,7 +125,7 @@ class Evolution:
                 matingPool.append(population.tournament_Selection())
 
             random.shuffle(matingPool)
-            
+
             # Create new individuals
             newIndividuals = []
             for j in range(0, num_to_replace, 2):
