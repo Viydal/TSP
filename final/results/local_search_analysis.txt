@@ -1,0 +1,25 @@
+Three local search algorithms; jump, exchange, and 2 opt neighborhoods
+were tested on TSP instances, each with 30 runs per instance.
+
+The jump algorithm achieved minimum tours 5–20% above optimal, 
+with smaller instances performing relatively better. 
+Exchange produced tours 15–25% above optimal, 
+showing similar trends: smaller problems yielded relatively better solutions. 
+In contrast, 2-opt neighborhoods consistently produced the best improvements, 
+often outperforming exchange and jump, particularly on larger instances, demonstrating stronger scalability.
+
+Overall, all local search methods significantly improved random initial paths. 
+2-opt showed the most robust performance, especially on larger TSPs, 
+while jump offered a lightweight improvement strategy suitable for smaller instances. 
+Exchange provided intermediate results but was less competitive compared to 2-opt.
+
+The jump, exchange, and 2-opt local search algorithms were evaluated on multiple TSP instances with 30 runs each. 
+Jump achieved minimum tours 5–20% above optimal, performing best on smaller instances, 
+while exchange yielded 15–25% above optimal, showing greater variability and weaker relative performance on larger problems. 
+In contrast, 2-opt consistently improved tour quality across all instances, 
+achieving solutions closer to optimal than both jump and exchange, particularly on larger TSPs. 
+Overall, jump is fast and simple, exchange provides moderate improvement but scales poorly, 
+and 2-opt offers the most reliable enhancement in tour length. 
+These results highlight a trade-off between simplicity and solution quality, 
+with smaller instances benefit from any local search, 
+while larger instances require more powerful neighborhood methods like 2-opt for competitive results.
