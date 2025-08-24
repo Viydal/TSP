@@ -16,6 +16,7 @@ class Individual:
     def getPath(self):
         return self.path
 
+    # Swap two cities with each other
     def swap(self, i=None, j=None):
         if i == None or j == None:
             i = random.randint(0, len(self.path) - 1)
@@ -23,6 +24,7 @@ class Individual:
         while i == j:
             j = random.randint(0, len(self.path) - 1)
 
+        # Perform the swap between the two cities
         temp = self.path[i]
         self.path[i] = self.path[j]
         self.path[j] = temp
@@ -72,15 +74,19 @@ class Individual:
 
         # print(f"Cities scrambled between {i} and {j}")
 
+    # Print path of an individual
     def printPath(self):
         for i, city in enumerate(self.path):
             print(f"City {i} ({city.id}): ({city.point.x}, {city.point.y})")
 
+    # Generalised function to centralise the execution of a mutation
     def performMutation(self, mutation_probability=0.05, mutation_type="swap"):
+        # Should a mutation occur
         random_number = random.random()
         if (random_number > mutation_probability):
             return self
 
+        # Check which mutation is required
         if mutation_type == "swap":
             self.swap()
         elif mutation_type == "inversion":
@@ -92,7 +98,7 @@ class Individual:
         else:
             print("Invalid mutation operation.")
 
-        # Take and update mutated individual
+        # After mutation, update the path of the individual
         self.evaluate()
 
         return self
