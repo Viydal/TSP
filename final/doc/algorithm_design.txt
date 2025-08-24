@@ -1,0 +1,22 @@
+Algorithm 1 - (SGA with Elitism):
+This algorithm preserves a portion of the best individuals within the population using the elitism 
+tournamenet selection method to ensure quality solutions persevere across generations. A mating pool 
+is constructed through tournament selection, with crossover and mutation ocurring on this mating pool 
+to introduce diversity. The use of elitism balances the exploritory nature of mutation and crossover 
+with the exploitive behaviour of elitism. This design allows for effective convergence of the population.
+
+Algorithm 2 - (SSGA):
+The SSGA algorithm replaces a small proportion of the population with children, which allows it to be far 
+more time efficient. By removing the worst individual in the population with the newly created child, the 
+population remains extremely stable and allows for the gradual pervasiveness of good personality traits. 
+This design is extremely efficient, and as such is effective at simulating large population and generation 
+counts.
+
+Algorithm 3 - (Generation Gap):
+This algorithm preserves a portion of the population, similar to that which occurs within algorithm 1, 
+controlled by the value of the generation gap. By default, the generation gap will incur the replacement 
+of half the original population, with this half being that of fittest individuals. A mating pool is 
+constructed through tournamenet selection with crossover and mutation ocurring on this mating pool to 
+introduce diversity. By copying a portion of the original poulation, this algorithm balances exploitation 
+and exploration, similar to that achieved in SGA. This design allows for a balance between effectivity 
+and efficiency, and as such was utilised to produce the results within your_EA.txt.

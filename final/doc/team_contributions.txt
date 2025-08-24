@@ -14,6 +14,16 @@ Riley
 - results/your_EA_outcomes
 - results/your_EA_inverover_comparison
 
+Asad
+
+- LocalSearch.jump()
+- Evolution.EA2()
+- Evolution.Inver-over()
+- results/local_search
+- results/local_search_analysis
+- results/inverover
+- results/your_EA_inverover_comparison
+
 Brian
 
 - LocalSearch.Exchange()
@@ -28,18 +38,9 @@ Bryce
 - Individual.insert()
 - Population.fitness_proportionalSelection()
 
-Asad
-
-- LocalSearch.jump()
-- Evolution.EA2()
-- Evolution.Inver-over()
-- results/local_search
-- results/local_search_analysis
-- results/inverover
-- results/your_EA_inverover_comparison
-
 Rory
 
 - Individual class
+- Population class
 - Individual.inversion()
 - Population.edge_recombination()
