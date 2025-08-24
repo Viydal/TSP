@@ -27,10 +27,6 @@ class Individual:
         self.path[i] = self.path[j]
         self.path[j] = temp
 
-        self.evaluate()
-
-        # print(f"Swapped cities {i}, and {j}\n")
-
     def inversion(self, i=None, j=None):
         if i == None or j == None:
             i = random.randint(0, len(self.path) - 1)
@@ -43,9 +39,7 @@ class Individual:
         # Dist betwenn i & j
         sub_length = (j - i + 1)
         for k in range(sub_length // 2):
-            self.path[i + k], self.path[j -
-                                        k] = self.path[j - k], self.path[i + k]
-        self.evaluate()
+            self.path[i + k], self.path[j - k] = self.path[j - k], self.path[i + k]
 
         # print(f"Inverted cities from {i} to {j}\n")
 
@@ -110,43 +104,3 @@ class Individual:
         self.evaluate()
 
         return self
-
-    def edge_recombination(parent1, parent2):
-        # Build adjacency table
-        adjacency = {}
-
-        def add_edge(city, neighbor):
-            if city not in adjacency:
-                adjacency[city] = set()
-            adjacency[city].add(neighbor)
-
-        for p in (parent1, parent2):
-            for i in range(len(p)):
-                left = p[i - 1]
-                right = p[(i + 1) % len(p)]
-                add_edge(p[i], left)
-                add_edge(p[i], right)
-
-        # Randomly choose starting city
-        current = random.choice(parent1)
-        child = [current]
-
-        # Build route
-        while len(child) < len(parent1):
-            # Remove current from adjacency
-            for neighbors in adjacency.values():
-                neighbors.discard(current)
-
-            # Pick next city
-            if adjacency[current]:
-                next_city = min(adjacency[current],
-                                key=lambda c: len(adjacency[c]))
-            else:
-                # If no adjacency left, choose random unused city
-                unused = [c for c in parent1 if c not in child]
-                next_city = random.choice(unused)
-
-            child.append(next_city)
-            current = next_city
-
-        return child
