@@ -336,11 +336,12 @@ class Population:
 
         return nextGeneration
 
+    # Fitness Proportional Selection
     def fitness_proportionalSelection(self, PopulationPerRoll: int = 1, rolls: int = 3):
         self.sortPopulation()
         newPopulation = []
-        fitness = []
         totalFitnessSum = 0
+        fitness = [] # List of Fitness(cost) of each path
         for i in self.individuals:
             fitness.append(math.ceil(i.cost))
             totalFitnessSum += math.floor(i.cost)
@@ -348,13 +349,21 @@ class Population:
         # To fix this for a 200 large population, about 10% of the last item needs to be added onto the total Fitness Sum.
         # Using this an approximate for other values has been created and checked to be approximatley accurate.
         totalFitnessSum = math.ceil(totalFitnessSum + fitness[-1]*(self.size/2000))
+
+        # Loop for each Roll/Spin of the wheel
         for i in range(rolls):
             rand = random.randint(0, totalFitnessSum)
             WinningRolls = []
+
+            # Add other evenly spaced individuals to newPopulation
+
+            #   Create list of fitness(cost) values which align with the Rolled/Spun wheel
             for j in range(PopulationPerRoll):
                 WinningRolls.append(rand + j*totalFitnessSum/PopulationPerRoll)
                 if WinningRolls[-1] > totalFitnessSum:
                     WinningRolls[-1] -= totalFitnessSum
+            
+            #   Extend newPopulation from WinningRolls
             for indiv in WinningRolls:
                 sum = 0
                 index = 0
@@ -365,9 +374,8 @@ class Population:
                     sum += fitness[-1]
                 if index > 0:
                     index -= 1
-                #index -= 1
-                #print(index % len(self.individuals))
                 newPopulation.append(self.individuals[index % len(self.individuals)])
+        
         return newPopulation
 
     # tournament selection for parent selection
