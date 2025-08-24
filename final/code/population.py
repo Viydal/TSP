@@ -3,40 +3,41 @@ import random
 import copy
 import math
 import time
-import tsp
-import individual
+from tsp import TSP, City, Point
 
 
 class Population:
     # Initialise a list of individuals as a population
-    def __init__(self, tsp: tsp.TSP, previous_path_costs: dict[tuple[tsp.City, ...],float] | None = None, size: int = 50):
+    def __init__(self, tsp: TSP, previous_path_costs: dict[tuple[City, ...],float] | None = None, size: int = 50):
         self.individuals: list[Individual] = []
         self.size: int = size
-        self.tsp: 'tsp.TSP' = tsp
+        self.tsp: TSP = tsp
         for i in range(size):
             self.individuals.append(Individual(tsp))
 
         # If the instance has been used previously, load a dictionary of previous costs to allow for more efficient execution
         if previous_path_costs is None:
-            self.path_costs: dict[tuple['tsp.City', ...],float] = {}
+            self.path_costs: dict[tuple[City, ...],float] = {}
         else:
             self.path_costs = previous_path_costs
 
     # Return the best individual within the population
-    def getBest(self):
+    def getBest(self) -> Individual | None:
         if not self.individuals:
             return None
 
         return min(self.individuals, key=lambda ind: ind.cost)
 
     # Return the best path cost from the population
-    def bestPathCost(self):
+    def bestPathCost(self) -> float | None:
         best_cost = self.getBest()
+        if best_cost is None:
+            return None
         return best_cost.cost
 
     # Only evaluate the cost of a path if it hasn't been seen before, if it has been seen use O(1) dictionary look up
     def efficient_evaluate(self, individual: Individual):
-        key: tuple[tsp.City, ...] = tuple(individual.path)
+        key: tuple[City, ...] = tuple(individual.path)
         if key not in self.path_costs:
             individual.evaluate()
             self.path_costs[key] = individual.cost
@@ -49,10 +50,9 @@ class Population:
         random_number: float = random.random()
         if (random_number > crossover_probability):
             return parent1, parent2
-
         # If crossover should occur, perform crossover and return children
-        child1: Individual
-        child2: Individual
+        child1: Individual | None = None
+        child2: Individual | None = None
         if crossover_type == "order":
             child1, child2 = self.orderCrossover(parent1, parent2)
         elif crossover_type == "pmx":
@@ -61,6 +61,10 @@ class Population:
             child1, child2 = self.cycleCrossover(parent1, parent2)
         else:
             print("Invalid crossover operation.")
+
+        # if either child is None then the crossover was incomplete, return parents
+        if child1 is None or child2 is None:
+            return parent1, parent2
 
         # Evaluate the new children
         self.efficient_evaluate(child1)
@@ -91,8 +95,8 @@ class Population:
         end: int = random.randint(start, path_length - 1)
         
         # Initialise children
-        child1: list[tsp.City | None] = [None] * path_length
-        child2: list[tsp.City | None] = [None] * path_length
+        child1: list[City | None] = [None] * path_length
+        child2: list[City | None] = [None] * path_length
 
         # Copy segment from parent to children
         for i in range(start, end + 1):
@@ -100,7 +104,7 @@ class Population:
             child2[i] = parent2.path[i]
 
         # Find which cities were not swapped in the copied segments for child1
-        remaining_cities: list[tsp.City] = []
+        remaining_cities: list[City] = []
         for i in range(path_length):
             pos: int = i % len(parent2.path)
             if parent2.path[pos] not in child1:
@@ -199,8 +203,8 @@ class Population:
                 child2_ids[i] = parent1_ids[i]
 
         # Construct individual objects from the list of ids of children
-        individual1: list[tsp.City] = []
-        individual2: list[tsp.City] = []
+        individual1: list[City] = []
+        individual2: list[City] = []
         # Construct individual1
         for id in child1_ids:
             for j in range(path_length):
@@ -316,8 +320,8 @@ class Population:
                 child2_ids[i] = parent1_ids[i]
 
         # Construct individual objects from the list of ids of children
-        individual1: list[tsp.City] = []
-        individual2: list[tsp.City] = []
+        individual1: list[City] = []
+        individual2: list[City] = []
         for id in child1_ids:
             for j in range(path_length):
                 if parent1.path[j].id == id:
@@ -349,9 +353,9 @@ class Population:
 
         return child1_individual, child2_individual
 
-    def edge_recombination(parent1: list[tsp.City], parent2: list[tsp.City]) -> list[tsp.City]:
+    def edge_recombination(self, parent1: list[City], parent2: list[City]) -> list[City]:
         # Build adjacency table
-        adjacency: dict[tsp.City,set[tsp.City]] = {}
+        adjacency: dict[City,set[City]] = {}
 
         def add_edge(city, neighbor):
             if city not in adjacency:
@@ -366,8 +370,8 @@ class Population:
                 add_edge(p[i], right)
 
         # Randomly choose starting city
-        current: tsp.City = random.choice(parent1)
-        child: list[tsp.City] = [current]
+        current: City = random.choice(parent1)
+        child: list[City] = [current]
 
         # Build route
         while len(child) < len(parent1):
@@ -407,9 +411,9 @@ class Population:
         return nextGeneration
 
     # Fitness Proportional Selection
-    def fitness_proportionalSelection(self, PopulationPerRoll: int = 1, rolls: int = 3) -> list[individual.Individual]:
+    def fitness_proportionalSelection(self, PopulationPerRoll: int = 1, rolls: int = 3) -> list[Individual]:
         self.sortPopulation()
-        newPopulation: list[individual.Individual] = []
+        newPopulation: list[Individual] = []
         totalFitnessSum: int = 0
         fitness: list[int] = [] # List of Fitness(cost) of each path
         for i in self.individuals:

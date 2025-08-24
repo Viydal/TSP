@@ -1,19 +1,19 @@
-import tsp
+from tsp import TSP, City, Point
 import copy
 import random
 
 
 class Individual:
-    def __init__(self, tsp_instance: tsp.TSP):
-        self.tsp: tsp.TSP = tsp_instance
-        self.path: list[tsp.City] = self.tsp.randomPath()
+    def __init__(self, tsp_instance: TSP):
+        self.tsp: TSP = tsp_instance
+        self.path: list[City] = self.tsp.randomPath()
         self.cost: float = self.tsp.pathCost(self.path)
 
     def evaluate(self) -> float:
         self.cost = self.tsp.pathCost(self.path)
         return self.cost
 
-    def getPath(self) -> list[tsp.City]:
+    def getPath(self) -> list[City]:
         return self.path
 
     # Swap two cities with each other
@@ -25,7 +25,7 @@ class Individual:
             j = random.randint(0, len(self.path) - 1)
 
         # Perform the swap between the two cities
-        temp: tsp.City = self.path[i]
+        temp: City = self.path[i]
         self.path[i] = self.path[j]
         self.path[j] = temp
 
@@ -53,11 +53,11 @@ class Individual:
             j = random.randint(0, len(self.path) - 1)
             while i == j:
                 j = random.randint(0, len(self.path) - 1)
-        elif i is None:
+        if i is None:
             i = random.randint(0, len(self.path) - 1)
             while i == j:
                 i = random.randint(0, len(self.path) - 1)
-        elif j is None:
+        if j is None:
             j =  random.randint(0, len(self.path) - 1)
             while i == j:
                 j =  random.randint(0, len(self.path) - 1)
@@ -68,14 +68,14 @@ class Individual:
         if i > j:
             i, j = j, i  # i is now always smaller than j
 
-        j_item: tsp.City = self.path.pop(j)
+        j_item: City = self.path.pop(j)
         self.path.insert(i, j_item)
 
         # print(f"Inserted city {j} to {i}\n")
 
     def scramble(self, i: int | None = None, j: int | None = None):
         i,j = self.fixCityIndex(i,j)
-        section: list[tsp.City] = []
+        section: list[City] = []
         for _ in range(j-i):
             section.append(self.path.pop(i))
         

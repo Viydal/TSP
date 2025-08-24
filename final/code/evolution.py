@@ -7,10 +7,13 @@ from individual import Individual
 
 class Evolution:
     # SGA (Simple Genetic Algorithm) with elitism
-    def EA1(population: population.Population, elites=0.1, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
+    @staticmethod
+    def EA1(population: Population, elites: float = 0.1, generationCount: int = 20000, crossover_method: str = "order", mutation_method: str = "insert", global_best: Individual | None = None) -> Individual | None:
         # Pass global best between generations
         if global_best is None:
             initial_best: Individual | None = population.getBest()
+            if initial_best is None:
+                return None
             initial_best.evaluate()
             global_best = copy.deepcopy(initial_best)
 
@@ -46,6 +49,8 @@ class Evolution:
 
             # If current best cost is less than the globally recorded minimum, update
             currentBest = population.getBest()
+            if currentBest is None:
+                return None
             if currentBest.cost < global_best.cost:
                 global_best = copy.deepcopy(currentBest)
 
@@ -56,10 +61,13 @@ class Evolution:
         return global_best
 
     # SSGA
-    def EA2(population: population.Population, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
+    @staticmethod
+    def EA2(population: Population, generationCount: int = 20000, crossover_method: str = "order", mutation_method: str = "insert", global_best: Individual | None = None) -> Individual | None:
         # Pass global best between generations
         if global_best is None:
             initial_best: Individual | None = population.getBest()
+            if initial_best is None:
+                return None
             initial_best.evaluate()
             global_best = copy.deepcopy(initial_best)
 
@@ -79,6 +87,8 @@ class Evolution:
             population.individuals = population.individuals[:-2] + [child1, child2]
 
             currentBest: Individual | None = population.getBest()
+            if currentBest is None:
+                return None
             if currentBest.cost < global_best.cost:
                 global_best = copy.deepcopy(currentBest)
 
@@ -88,10 +98,13 @@ class Evolution:
         return global_best
 
     # Generation Gap
-    def EA3(population: population.Population, generationCount=20000, generation_gap=0.5, crossover_method="order", mutation_method="insert", global_best=None):
+    @staticmethod
+    def EA3(population: Population, generationCount: int = 20000, generation_gap: float = 0.5, crossover_method: str = "order", mutation_method: str = "insert", global_best: Individual | None = None) -> Individual | None:
         # Pass global best between generations
         if global_best is None:
             initial_best: Individual | None = population.getBest()
+            if initial_best is None:
+                return None
             initial_best.evaluate()
             global_best = copy.deepcopy(initial_best)
 
@@ -141,6 +154,8 @@ class Evolution:
             population.updatePopulation(nextGeneration)
 
             currentBest = population.getBest()
+            if currentBest is None:
+                return None
             if currentBest.cost < global_best.cost:
                 global_best = copy.deepcopy(currentBest)
 
