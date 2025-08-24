@@ -11,11 +11,10 @@ Jump algorithm run 30 times per instance with random initial permutation
     kroC100.tsp,jump,30,23954.67,26387.73
     kroD100.tsp,jump,30,24815.56,27579.47
     lin105.tsp,jump,30,16460.77,18692.99
-    pcb442.tsp,jump,30,,
 
 
 SUMMARY (25 WORDS): 
-The jump local search was run 30 times on 9 TSP instances, 
+The jump local search was run 30 times on 8 TSP instances, 
 achieving minimum tours 5–20% above optimal, 
 with smaller instances performing relatively better than larger ones.
 
