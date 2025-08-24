@@ -9,7 +9,7 @@ It is highly modular and customisable.
    - Set population size with `size` parameter
    - Set crossover and mutation method with `crossover_method` and `mutation_method` parameters respectively
    - Set generation count with `generationCount` parameter
-   - Set algorithm type: ("EA1", "EA2", "EA3")
+   - Set algorithm type: ("EA1", "EA2", "EA3", "inver_over")
    - Set number of elites with `elites` parameter (EA1 only)
    - Set generation gap with `generation_gap` parameter (EA3 only)
 4. Run script with `python main.py`
