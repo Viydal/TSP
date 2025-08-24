@@ -30,12 +30,14 @@ class Individual:
         self.path[j] = temp
 
     def inversion(self, i=None, j=None):
+        # Select two random indices if not provided
         if i == None or j == None:
             i = random.randint(0, len(self.path) - 1)
             j = random.randint(0, len(self.path) - 1)
         while i == j:
             j = random.randint(0, len(self.path) - 1)
 
+        # Ensure i is less than j
         if i > j:
             i, j = j, i
         # Dist betwenn i & j

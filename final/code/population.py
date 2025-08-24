@@ -348,12 +348,14 @@ class Population:
     def edge_recombination(parent1, parent2):
         # Build adjacency table
         adjacency = {}
-
+        
+        # Helper function to add edges to adjacency table
         def add_edge(city, neighbor):
             if city not in adjacency:
                 adjacency[city] = set()
             adjacency[city].add(neighbor)
-
+        
+        # Add edges from both parents
         for p in (parent1, parent2):
             for i in range(len(p)):
                 left = p[i - 1]

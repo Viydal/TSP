@@ -41,5 +41,6 @@ Bryce
 Rory
 
 - Individual class
+- Population class
 - Individual.inversion()
 - Population.edge_recombination()
