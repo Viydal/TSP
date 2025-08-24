@@ -1,0 +1,26 @@
+Instance: eil101.tsp
+Average Cost: 744.64 | Standard deviation: 21.3
+
+Instance: eil51.tsp
+Average Cost: 464.43 | Standard deviation: 14.32
+
+Instance: eil76.tsp
+Average Cost: 608.99 | Standard deviation: 17.77
+
+Instance: kroA100.tsp
+Average Cost: 26112.17 | Standard deviation: 835.53
+
+Instance: kroC100.tsp
+Average Cost: 25953.7 | Standard deviation: 1172.14
+
+Instance: kroD100.tsp
+Average Cost: 25800.39 | Standard deviation: 1141.04
+
+Instance: lin105.tsp
+Average Cost: 17828.4 | Standard deviation: 770.58
+
+Instance: pcb442.tsp
+Average Cost: 146123.78 | Standard deviation: 3880.09
+
+Instance: st70.tsp
+Average Cost: 762.92 | Standard deviation: 27.64

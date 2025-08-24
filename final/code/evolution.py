@@ -79,5 +79,54 @@ class Evolution:
         
         return global_best
 
-    def EA3():
-        pass
+    # Generation Gap
+    def EA3(population: population.Population, generationCount=20000, generation_gap=0.5, global_best=None):
+        if global_best is None:
+            initial_best = population.getBest()
+            initial_best.evaluate()
+            global_best = copy.deepcopy(initial_best)
+        
+        num_to_replace = max(2, int(population.size * generation_gap))
+        if num_to_replace % 2 != 0:
+            num_to_replace += 1
+        
+        num_to_replace = min(num_to_replace, population.size)
+        
+        for gen in range(generationCount):
+            population.sortPopulation()
+            
+            survivors = population.individuals[:population.size - num_to_replace]
+            
+            matingPool = []
+            for j in range(num_to_replace):
+                matingPool.append(population.tournament_Selection())
+            
+            random.shuffle(matingPool)
+            
+            newIndividuals = []
+            for j in range(0, num_to_replace, 2):
+                if j + 1 >= len(matingPool):
+                    parent2 = population.tournament_Selection()
+                else:
+                    parent2 = matingPool[j + 1]
+                
+                child1, child2 = population.performCrossover(matingPool[j], parent2, crossover_type="order")
+                
+                child1 = child1.performMutation(mutation_type="insert")
+                child2 = child2.performMutation(mutation_type="insert")
+                
+                newIndividuals.extend([child1, child2])
+            
+            newIndividuals = newIndividuals[:num_to_replace]
+            
+            nextGeneration = survivors + newIndividuals
+            population.updatePopulation(nextGeneration)
+            
+            currentBest = population.getBest()
+            if currentBest.cost < global_best.cost:
+                global_best = copy.deepcopy(currentBest)
+            
+            # if gen % 100 == 0:
+            #     print(f"generation: {gen} - best path with cost: {round(global_best.cost, 2)} - replaced: {num_to_replace}/{population.size}")
+        
+        return global_best

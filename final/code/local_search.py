@@ -49,28 +49,28 @@ class LocalSearch:
     # Your corrected function should be:
 
     def two_opt_neighborhood_local_search(tour, i, k):
-        #2-opt neighborhood search: reverses the segment between i and j (inclusive)
+        # 2-opt neighborhood search: reverses the segment between i and j (inclusive)
         new_tour = tour[0:i] + tour[i:k + 1][::-1] + tour[k + 1:]
         return new_tour
-    
+
     def local_search_2opt(tour, tsp_instance):
-        #Full 2-opt local search: repeatedly applies 2-opt moves to improve the tour
-        
+        # Full 2-opt local search: repeatedly applies 2-opt moves to improve the tour
+
         improved = True
         best_tour = tour[:]
         best_cost = tsp_instance.pathCost(best_tour)
-        
-        
+
         while improved:
             improved = False
             n = len(best_tour)
-            
+
             # Try all possible 2-opt moves
             for i in range(n - 1):
                 for j in range(i + 2, n):
                     if i == 0 and j == n - 1:
-                        continue  # skip full reversal                    
-                    new_tour = best_tour[:i+1] + best_tour[i+1:j+1][::-1] + best_tour[j+1:]
+                        continue  # skip full reversal
+                    new_tour = best_tour[:i+1] + \
+                        best_tour[i+1:j+1][::-1] + best_tour[j+1:]
                     new_cost = tsp_instance.pathCost(new_tour)
                 if new_cost < best_cost:
                     best_tour, best_cost = new_tour, new_cost
@@ -79,8 +79,8 @@ class LocalSearch:
             if improved:
                 break
         print("Improved path cost after 2-opt:", best_cost)
-        return 
-    
+        return
+
     def jump(tsp_instance, path):
 
         path = path[:]
@@ -109,4 +109,3 @@ class LocalSearch:
                         improved = True
 
         return path
-
