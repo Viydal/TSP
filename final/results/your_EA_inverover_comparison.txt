@@ -1,7 +1,8 @@
 The inver-over algorithm consistently outperformed the generational gap algorithm (EA3) 
-across all TSP instances. Inver-over got lower average costs, very similar the optimal solutions,
-with very low standard deviations which shows it was was both a better and more stable algorithm. 
-On the other hand the generational gap algorithm showed significantly higher costs and variances, 
+across all TSP instances. Inver-over got lower average costs, very similar to the optimal solutions,
+with very low standard deviations which shows it was both a better and more stable algorithm. 
+On the other, hand the generational gap algorithm showed significantly higher costs and variances, 
 especially on the larger instances such as pcb442 or the KROs. The inver-over algorithm achieved 
-these costs with a faster run time aswell, it took about 4.5 hours to run inver-over 30 times for
+these costs more efficiently, it took about 4.5 hours to run inver-over 30 times for
 each instance whereas the generational gap took closer to 7 hours.
+
