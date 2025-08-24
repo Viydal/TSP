@@ -3,38 +3,41 @@ import random
 import copy
 import math
 import time
+from tsp import TSP, City, Point
 
 
 class Population:
     # Initialise a list of individuals as a population
-    def __init__(self, tsp, previous_path_costs=None, size=50):
-        self.individuals = []
-        self.size = size
-        self.tsp = tsp
+    def __init__(self, tsp: TSP, previous_path_costs: dict[tuple[City, ...],float] | None = None, size: int = 50):
+        self.individuals: list[Individual] = []
+        self.size: int = size
+        self.tsp: TSP = tsp
         for i in range(size):
             self.individuals.append(Individual(tsp))
 
         # If the instance has been used previously, load a dictionary of previous costs to allow for more efficient execution
         if previous_path_costs is None:
-            self.path_costs = {}
+            self.path_costs: dict[tuple[City, ...],float] = {}
         else:
             self.path_costs = previous_path_costs
 
     # Return the best individual within the population
-    def getBest(self):
+    def getBest(self) -> Individual | None:
         if not self.individuals:
             return None
 
         return min(self.individuals, key=lambda ind: ind.cost)
 
     # Return the best path cost from the population
-    def bestPathCost(self):
+    def bestPathCost(self) -> float | None:
         best_cost = self.getBest()
+        if best_cost is None:
+            return None
         return best_cost.cost
 
     # Only evaluate the cost of a path if it hasn't been seen before, if it has been seen use O(1) dictionary look up
     def efficient_evaluate(self, individual: Individual):
-        key = tuple(individual.path)
+        key: tuple[City, ...] = tuple(individual.path)
         if key not in self.path_costs:
             individual.evaluate()
             self.path_costs[key] = individual.cost
@@ -44,11 +47,12 @@ class Population:
     # Generalised function to centralise the execution of a crossover
     def performCrossover(self, parent1, parent2, crossover_probability=0.8, crossover_type="order"):
         # Should crossover occur, if not return parents without modification
-        random_number = random.random()
+        random_number: float = random.random()
         if (random_number > crossover_probability):
             return parent1, parent2
-
         # If crossover should occur, perform crossover and return children
+        child1: Individual | None = None
+        child2: Individual | None = None
         if crossover_type == "order":
             child1, child2 = self.orderCrossover(parent1, parent2)
         elif crossover_type == "pmx":
@@ -57,6 +61,10 @@ class Population:
             child1, child2 = self.cycleCrossover(parent1, parent2)
         else:
             print("Invalid crossover operation.")
+
+        # if either child is None then the crossover was incomplete, return parents
+        if child1 is None or child2 is None:
+            return parent1, parent2
 
         # Evaluate the new children
         self.efficient_evaluate(child1)
@@ -70,25 +78,25 @@ class Population:
         self.size = len(self.individuals)
 
     # Sort population by path cost of individuals
-    def sortPopulation(self):
+    def sortPopulation(self) -> list[Individual]:
         self.individuals.sort(key=lambda ind: ind.cost)
         return self.individuals
 
     # Get the list of individuals that makes up the population
-    def getPopulation(self):
+    def getPopulation(self) -> list[Individual]:
         return self.individuals
 
     # Perform order crossover with two parents
-    def orderCrossover(self, parent1, parent2):
+    def orderCrossover(self, parent1: Individual, parent2: Individual) -> tuple[Individual,Individual]:
         path_length = len(parent1.path)
 
         # Take index for random section
-        start = random.randint(0, path_length - 1)
-        end = random.randint(start, path_length - 1)
+        start: int = random.randint(0, path_length - 1)
+        end: int = random.randint(start, path_length - 1)
         
         # Initialise children
-        child1 = [None] * path_length
-        child2 = [None] * path_length
+        child1: list[City | None] = [None] * path_length
+        child2: list[City | None] = [None] * path_length
 
         # Copy segment from parent to children
         for i in range(start, end + 1):
@@ -96,16 +104,16 @@ class Population:
             child2[i] = parent2.path[i]
 
         # Find which cities were not swapped in the copied segments for child1
-        remaining_cities = []
+        remaining_cities: list[City] = []
         for i in range(path_length):
-            pos = i % len(parent2.path)
+            pos: int = i % len(parent2.path)
             if parent2.path[pos] not in child1:
                 remaining_cities.append(parent2.path[pos])
 
         # Fill child1 cities with remaining cities from parent
-        counter = 0
+        counter: int = 0
         for i in range(path_length):
-            position = (end + 1 + i) % path_length
+            position: int = (end + 1 + i) % path_length
             if child1[position] is None and counter < len(remaining_cities):
                 child1[position] = remaining_cities[counter]
                 counter = counter + 1
@@ -126,7 +134,7 @@ class Population:
                 counter = counter + 1
 
         # Create Individual objects to be directly appended within the Evolution class
-        child1_individual = Individual(self.tsp)
+        child1_individual: Individual = Individual(self.tsp)
         child1_individual.path = child1
         child2_individual = Individual(self.tsp)
         child2_individual.path = child2
@@ -134,20 +142,20 @@ class Population:
         return child1_individual, child2_individual
 
     # Perform PMX crossover with two parents
-    def PMXCrossover(self, parent1, parent2):
-        path_length = len(parent1.path)
+    def PMXCrossover(self, parent1: Individual, parent2: Individual) -> tuple[Individual,Individual]:
+        path_length: int = len(parent1.path)
 
         # Take index for random section
-        start = random.randint(0, path_length - 1)
-        end = random.randint(start, path_length - 1)
+        start: int = random.randint(0, path_length - 1)
+        end: int = random.randint(start, path_length - 1)
 
         # Take index for random section
-        child1_ids = [None] * path_length
-        child2_ids = [None] * path_length
+        child1_ids: list[int | None] = [None] * path_length
+        child2_ids: list[int | None] = [None] * path_length
 
         # Take index for random section
-        parent1_ids = [city.id for city in parent1.path]
-        parent2_ids = [city.id for city in parent2.path]
+        parent1_ids: list[int] = [city.id for city in parent1.path]
+        parent2_ids: list[int] = [city.id for city in parent2.path]
 
         # Copy segment from parent to children
         for i in range(start, end + 1):
@@ -158,8 +166,8 @@ class Population:
         for i in range(start, end + 1):
             if parent2_ids[i] not in child1_ids:
                 # Find index for the cities placement
-                findValue = parent1_ids[i]
-                index = parent2_ids.index(findValue)
+                findValue: int = parent1_ids[i]
+                index: int = parent2_ids.index(findValue)
 
                 # If index for cities placement is again within copied segment, continue until this is no longer the case
                 while index <= end and index >= start:
@@ -195,8 +203,8 @@ class Population:
                 child2_ids[i] = parent1_ids[i]
 
         # Construct individual objects from the list of ids of children
-        individual1 = []
-        individual2 = []
+        individual1: list[City] = []
+        individual2: list[City] = []
         # Construct individual1
         for id in child1_ids:
             for j in range(path_length):
@@ -222,36 +230,36 @@ class Population:
                         break
         
         # Create Individual objects to be directly appended within the Evolution class
-        child1_individual = Individual(self.tsp)
+        child1_individual: Individual = Individual(self.tsp)
         child1_individual.path = individual1
-        child2_individual = Individual(self.tsp)
+        child2_individual: Individual = Individual(self.tsp)
         child2_individual.path = individual2
 
         return child1_individual, child2_individual
 
     # Perform cycle crossover with two parents
-    def cycleCrossover(self, parent1, parent2):
-        path_length = len(parent1.path)
+    def cycleCrossover(self, parent1: Individual, parent2: Individual) -> tuple[Individual, Individual]:
+        path_length: int = len(parent1.path)
 
         # Take index for random section
-        parent1_ids = [city.id for city in parent1.path]
-        parent2_ids = [city.id for city in parent2.path]
+        parent1_ids: list[int] = [city.id for city in parent1.path]
+        parent2_ids: list[int] = [city.id for city in parent2.path]
 
         # Take index for random section
-        child1_ids = [None] * path_length
-        child2_ids = [None] * path_length
+        child1_ids: list[int | None] = [None] * path_length
+        child2_ids: list[int | None] = [None] * path_length
 
         # Find cycles within parent1, alternating between using and discarding the found cycle
-        parent1Cycle = {}
-        parent1CycleAvoid = {}
+        parent1Cycle: dict[int,int] = {}
+        parent1CycleAvoid: dict[int,int] = {}
 
         # Find cycle within parent1
-        used = set()
-        keep = True
+        used: set[int] = set()
+        keep: bool = True
         while len(used) < path_length:
             for i in range(path_length):
                 if i not in used:
-                    index = i
+                    index: int = i
                     break
             
             # Find cycle within parent1, if its supposed to be kept save it to appropriate array
@@ -277,8 +285,8 @@ class Population:
                 child1_ids[i] = parent2_ids[i]
 
         # Find cycles within parent2, alternating between using and discarding the found cycle
-        parent2Cycle = {}
-        parent2CycleAvoid = {}
+        parent2Cycle: dict[int, int] = {}
+        parent2CycleAvoid: dict[int, int] = {}
 
         # Find cycle within parent2
         used = set()
@@ -312,8 +320,8 @@ class Population:
                 child2_ids[i] = parent1_ids[i]
 
         # Construct individual objects from the list of ids of children
-        individual1 = []
-        individual2 = []
+        individual1: list[City] = []
+        individual2: list[City] = []
         for id in child1_ids:
             for j in range(path_length):
                 if parent1.path[j].id == id:
@@ -338,16 +346,16 @@ class Population:
                         break
 
         # Create Individual objects to be directly appended within the Evolution class
-        child1_individual = Individual(self.tsp)
+        child1_individual: Individual = Individual(self.tsp)
         child1_individual.path = individual1
-        child2_individual = Individual(self.tsp)
+        child2_individual: Individual = Individual(self.tsp)
         child2_individual.path = individual2
 
         return child1_individual, child2_individual
 
-    def edge_recombination(parent1, parent2):
+    def edge_recombination(self, parent1: list[City], parent2: list[City]) -> list[City]:
         # Build adjacency table
-        adjacency = {}
+        adjacency: dict[City,set[City]] = {}
         
         # Helper function to add edges to adjacency table
         def add_edge(city, neighbor):
@@ -364,8 +372,8 @@ class Population:
                 add_edge(p[i], right)
 
         # Randomly choose starting city
-        current = random.choice(parent1)
-        child = [current]
+        current: City = random.choice(parent1)
+        child: list[City] = [current]
 
         # Build route
         while len(child) < len(parent1):
@@ -388,8 +396,8 @@ class Population:
         return child
 
     # Copy N individuals over to next generation and return the partially filled next generation
-    def elitism(self, elite_percentage=0.1):
-        elite_count = int(elite_percentage * self.size)
+    def elitism(self, elite_percentage: float = 0.1) -> list[Individual]:
+        elite_count: int = int(elite_percentage * self.size)
         # Ensure even count of individuals
         if not elite_count % 2 == 0:
             elite_count += 1
@@ -397,49 +405,67 @@ class Population:
         self.sortPopulation()
 
         # Elitism - Take the top n individuals in the population
-        nextGeneration = []
+        nextGeneration: list[Individual] = []
         for i in range(elite_count):
             nextGeneration.append(self.individuals[i])
 
         # Return portion of elite individuals
         return nextGeneration
 
-    def fitness_proportionalSelection(self, PopulationPerRoll: int = 10, rolls: int = 3):
+    # Fitness Proportional Selection
+    def fitness_proportionalSelection(self, PopulationPerRoll: int = 1, rolls: int = 3) -> list[Individual]:
         self.sortPopulation()
-        newPopulation = []
-        fitness = []
-        totalFitnessSum = 0
+        newPopulation: list[Individual] = []
+        totalFitnessSum: int = 0
+        fitness: list[int] = [] # List of Fitness(cost) of each path
         for i in self.individuals:
-            fitness.append(math.floor(i.tsp.pathCost()))
-            totalFitnessSum += fitness[-1]
-        for i in rolls:
-            rand = random.randint(0, totalFitnessSum)
-            WinningRolls = []
-            for j in PopulationPerRoll:
+            fitness.append(math.ceil(i.cost))
+            totalFitnessSum += math.floor(i.cost)
+        # For larger numbers the highest fitness individual becomes gradually less chosen.
+        # To fix this for a 200 large population, about 10% of the last item needs to be added onto the total Fitness Sum.
+        # Using this an approximate for other values has been created and checked to be approximatley accurate.
+        totalFitnessSum = math.ceil(totalFitnessSum + fitness[-1]*(self.size/2000))
+
+        # Loop for each Roll/Spin of the wheel
+        for i in range(rolls):
+            rand: int = random.randint(0, totalFitnessSum)
+            WinningRolls: list[float] = []
+
+            # Add other evenly spaced individuals to newPopulation
+
+            #   Create list of fitness(cost) values which align with the Rolled/Spun wheel
+            for j in range(PopulationPerRoll):
                 WinningRolls.append(rand + j*totalFitnessSum/PopulationPerRoll)
                 if WinningRolls[-1] > totalFitnessSum:
                     WinningRolls[-1] -= totalFitnessSum
+            
+            #   Extend newPopulation from WinningRolls
             for indiv in WinningRolls:
-                sum = 0
-                index = 0
-                while sum < indiv:
+                sum: int = 0
+                index: int = 0
+                while sum < indiv and index < len(fitness):
                     sum += fitness[index]
                     index += 1
-                newPopulation.append(self.individuals[index])
+                if sum < indiv:
+                    sum += fitness[-1]
+                if index > 0:
+                    index -= 1
+                newPopulation.append(self.individuals[index % len(self.individuals)])
+        
         return newPopulation
 
     # tournament selection for parent selection
-    def tournament_Selection(self, k=3):
+    def tournament_Selection(self, k: int = 3) -> Individual:
         # Randomly select k individuals from the population
-        tournament = random.sample(self.individuals, k)
+        tournament: list[Individual] = random.sample(self.individuals, k)
         # Get the individual with the lowest cost
-        winner = min(tournament, key=lambda ind: ind.cost)
+        winner: Individual = min(tournament, key=lambda ind: ind.cost)
         return winner
 
     # Informal tournament selection for parent selection
     # This method selects two parents using tournament selection
     # Not sure if right
-    def informal_tournament_selection(self, k=3):
-        parent1 = self.tournament_Selection(k)
-        parent2 = self.tournament_Selection(k)
+    def informal_tournament_selection(self, k: int = 3) -> tuple[Individual,Individual]:
+        parent1: Individual = self.tournament_Selection(k)
+        parent2: Individual = self.tournament_Selection(k)
         return parent1, parent2

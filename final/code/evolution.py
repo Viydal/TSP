@@ -1,36 +1,42 @@
-import population
+from population import Population
 import time
 import random
 import copy
+from individual import Individual
+from tsp import City
 
 
 class Evolution:
     # General EA handler
-    def handleEA(self, population: population.Population, elites=0.1, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None, generation_gap=0.5, algorithm_type="EA1"):
+    @staticmethod
+    def handleEA(population: Population, elites: float = 0.1, generationCount: int = 20000, crossover_method: str = "order", mutation_method: str = "insert", global_best: Individual | None = None, generation_gap: float = 0.5, algorithm_type: str = "EA1"):
         if algorithm_type == "EA1":
-            return self.EA1(population, elites=elites, generationCount=generationCount, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
+            return Evolution.EA1(population, elites=elites, generationCount=generationCount, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
         elif algorithm_type == "EA2":
-            return self.EA2(population, generationCount=generationCount, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
+            return Evolution.EA2(population, generationCount=generationCount, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
         elif algorithm_type == "EA3":
-            return self.EA3(population, generationCount=generationCount, generation_gap=generation_gap, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
+            return Evolution.EA3(population, generationCount=generationCount, generation_gap=generation_gap, crossover_method=crossover_method, mutation_method=mutation_method, global_best=global_best)
 
     # SGA (Simple Genetic Algorithm) with elitism
-    def EA1(self, population: population.Population, elites=0.1, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
+    @staticmethod
+    def EA1(population: Population, elites: float = 0.1, generationCount: int = 20000, crossover_method: str = "order", mutation_method: str = "insert", global_best: Individual | None = None) -> Individual | None:
         # Pass global best between generations
         if global_best is None:
-            initial_best = population.getBest()
+            initial_best: Individual | None = population.getBest()
+            if initial_best is None:
+                return None
             initial_best.evaluate()
             global_best = copy.deepcopy(initial_best)
 
         for i in range(generationCount):
-            nextGeneration = []
+            nextGeneration: list[Individual] = []
             nextGeneration.extend(population.elitism(elite_percentage=elites))
 
             # Future children
-            childrenPool = []
+            childrenPool: list[Individual] = []
 
             # Create mating pool of individuals for next generation
-            matingPool = []
+            matingPool: list[Individual] = []
             for j in range(population.size - len(nextGeneration)):
                 matingPool.append(population.tournament_Selection())
 
@@ -55,6 +61,8 @@ class Evolution:
 
             # If current best cost is less than the globally recorded minimum, update
             currentBest = population.getBest()
+            if currentBest is None:
+                return None
             if currentBest.cost < global_best.cost:
                 global_best = copy.deepcopy(currentBest)
 
@@ -65,10 +73,13 @@ class Evolution:
         return global_best
 
     # SSGA
-    def EA2(self, population: population.Population, generationCount=20000, crossover_method="order", mutation_method="insert", global_best=None):
+    @staticmethod
+    def EA2(population: Population, generationCount: int = 20000, crossover_method: str = "order", mutation_method: str = "insert", global_best: Individual | None = None) -> Individual | None:
         # Pass global best between generations
         if global_best is None:
-            initial_best = population.getBest()
+            initial_best: Individual | None = population.getBest()
+            if initial_best is None:
+                return None
             initial_best.evaluate()
             global_best = copy.deepcopy(initial_best)
 
@@ -88,7 +99,9 @@ class Evolution:
             population.individuals = population.individuals[:-2] + [
                 child1, child2]
 
-            currentBest = population.getBest()
+            currentBest: Individual | None = population.getBest()
+            if currentBest is None:
+                return None
             if currentBest.cost < global_best.cost:
                 global_best = copy.deepcopy(currentBest)
 
@@ -98,10 +111,13 @@ class Evolution:
         return global_best
 
     # Generation Gap
-    def EA3(self, population: population.Population, generationCount=20000, generation_gap=0.5, crossover_method="order", mutation_method="insert", global_best=None):
+    @staticmethod
+    def EA3(population: Population, generationCount: int = 20000, generation_gap: float = 0.5, crossover_method: str = "order", mutation_method: str = "insert", global_best: Individual | None = None) -> Individual | None:
         # Pass global best between generations
         if global_best is None:
-            initial_best = population.getBest()
+            initial_best: Individual | None = population.getBest()
+            if initial_best is None:
+                return None
             initial_best.evaluate()
             global_best = copy.deepcopy(initial_best)
 
@@ -130,7 +146,7 @@ class Evolution:
             newIndividuals = []
             for j in range(0, num_to_replace, 2):
                 if j + 1 >= len(matingPool):
-                    parent2 = population.tournament_Selection()
+                    parent2: Individual = population.tournament_Selection()
                 else:
                     parent2 = matingPool[j + 1]
 
@@ -152,6 +168,8 @@ class Evolution:
             population.updatePopulation(nextGeneration)
 
             currentBest = population.getBest()
+            if currentBest is None:
+                return None
             if currentBest.cost < global_best.cost:
                 global_best = copy.deepcopy(currentBest)
 
@@ -162,63 +180,66 @@ class Evolution:
         return global_best
 
     # Inver-over
-    def inver_over(population, generationCount=20000, p=0.02, global_best=None):
+    @staticmethod
+    def inver_over(population: Population, generationCount: int = 20000, p: float = 0.02, global_best: Individual | None = None) -> Individual | None:
 
         if global_best is None:
             global_best = copy.copy(population.getBest())
+            if global_best is None:
+                return None
         
         for gen in range(generationCount):
-            pop_list = population.getPopulation()
-            new_population = []
+            pop_list: list[Individual] = population.getPopulation()
+            new_population: list[Individual] = []
             
             for ind in pop_list:
                 # Create copy of individual
-                S0 = copy.copy(ind)
+                S0: Individual = copy.copy(ind)
                 S0.path = ind.path[:]  # Copy path
                 
                 # Select random starting city
-                c = random.choice(S0.path)
+                c: City = random.choice(S0.path)
                 
                 while True:
                     if random.random() < p:
                         # Select random city other than c
-                        other_cities = [city for city in S0.path if city.id != c.id]
-                        c_prime = random.choice(other_cities)
+                        other_cities: list[City] = [city for city in S0.path if city.id != c.id]
+                        c_prime: City = random.choice(other_cities)
                     else:
                         # Select random individual and get next city after c
-                        other_individual = random.choice(pop_list)
+                        other_individual: Individual = random.choice(pop_list)
                         # Find position of c in the other individual
-                        c_pos = next(i for i, city in enumerate(other_individual.path) if city.id == c.id)
+                        c_pos: int = next(i for i, city in enumerate(other_individual.path) if city.id == c.id)
                         # Get next city
-                        next_pos = (c_pos + 1) % len(other_individual.path)
+                        next_pos: int = (c_pos + 1) % len(other_individual.path)
                         c_prime = other_individual.path[next_pos]
                     
                     # Check if c' is next to c in S0
-                    c_pos_in_S0 = next(i for i, city in enumerate(S0.path) if city.id == c.id)
-                    n = len(S0.path)
+                    c_pos_in_S0: int = next(i for i, city in enumerate(S0.path) if city.id == c.id)
+                    n: int = len(S0.path)
                     
                     # Get previous and next cities of c in S0
-                    prev_city = S0.path[c_pos_in_S0 - 1]
-                    next_city = S0.path[(c_pos_in_S0 + 1) % n]
+                    prev_city: City = S0.path[c_pos_in_S0 - 1]
+                    next_city: City = S0.path[(c_pos_in_S0 + 1) % n]
                     
                     # If c' is next to c, stop repeat loop
                     if c_prime.id == prev_city.id or c_prime.id == next_city.id:
                         break
                     
                     # Inverse section from next city of c to c'
-                    next_c_pos = (c_pos_in_S0 + 1) % n
-                    c_prime_pos = next(i for i, city in enumerate(S0.path) if city.id == c_prime.id)
+                    next_c_pos: int = (c_pos_in_S0 + 1) % n
+                    c_prime_pos: int = next(i for i, city in enumerate(S0.path) if city.id == c_prime.id)
                     
                     # Determine the segment to reverse
-                    start_pos = next_c_pos
-                    end_pos = c_prime_pos
+                    start_pos: int = next_c_pos
+                    end_pos: int = c_prime_pos
                     
                     if start_pos <= end_pos:
                         # Reverse from start to end
                         S0.path[start_pos:end_pos + 1] = reversed(S0.path[start_pos:end_pos + 1])
                     else:
                         # Reverse the segment that wraps around
-                        segment = S0.path[start_pos:] + S0.path[:end_pos + 1]
+                        segment: list[City] = S0.path[start_pos:] + S0.path[:end_pos + 1]
                         segment.reverse()
                         S0.path[start_pos:] = segment[:len(S0.path) - start_pos]
                         S0.path[:end_pos + 1] = segment[len(S0.path) - start_pos:]
@@ -241,6 +262,8 @@ class Evolution:
             
             # Track best
             current_best = population.getBest()
+            if current_best is None:
+                return None
             if current_best.cost < global_best.cost:
                 global_best = copy.copy(current_best)
             

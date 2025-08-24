@@ -1,23 +1,23 @@
-import tsp
+from tsp import TSP, City, Point
 import copy
 import random
 
 
 class Individual:
-    def __init__(self, tsp_instance, path=None):
-        self.tsp = tsp_instance
-        self.path = self.tsp.randomPath()
-        self.cost = self.tsp.pathCost(self.path)
+    def __init__(self, tsp_instance: TSP):
+        self.tsp: TSP = tsp_instance
+        self.path: list[City] = self.tsp.randomPath()
+        self.cost: float = self.tsp.pathCost(self.path)
 
-    def evaluate(self):
+    def evaluate(self) -> float:
         self.cost = self.tsp.pathCost(self.path)
         return self.cost
 
-    def getPath(self):
+    def getPath(self) -> list[City]:
         return self.path
 
     # Swap two cities with each other
-    def swap(self, i=None, j=None):
+    def swap(self, i: int | None = None, j: int | None = None):
         if i == None or j == None:
             i = random.randint(0, len(self.path) - 1)
             j = random.randint(0, len(self.path) - 1)
@@ -25,11 +25,11 @@ class Individual:
             j = random.randint(0, len(self.path) - 1)
 
         # Perform the swap between the two cities
-        temp = self.path[i]
+        temp: City = self.path[i]
         self.path[i] = self.path[j]
         self.path[j] = temp
 
-    def inversion(self, i=None, j=None):
+    def inversion(self, i: int | None = None, j: int | None = None):
         # Select two random indices if not provided
         if i == None or j == None:
             i = random.randint(0, len(self.path) - 1)
@@ -41,37 +41,48 @@ class Individual:
         if i > j:
             i, j = j, i
         # Dist betwenn i & j
-        sub_length = (j - i + 1)
+        sub_length: int = (j - i + 1)
         for k in range(sub_length // 2):
             self.path[i + k], self.path[j - k] = self.path[j - k], self.path[i + k]
 
         # print(f"Inverted cities from {i} to {j}\n")
 
-    def insert(self, i: int | None = None, j: int | None = None):
+
+    # Randomly set i or j if not given - ensures that if this occurs i & j are different values
+    def fixCityIndex(self, i: int | None, j: int | None) -> tuple[int,int]:
         if i is None and j is None:
             i = random.randint(0, len(self.path) - 1)
             j = random.randint(0, len(self.path) - 1)
             while i == j:
                 j = random.randint(0, len(self.path) - 1)
-        if i == None:
+        if i is None:
             i = random.randint(0, len(self.path) - 1)
-        if j == None:
-            j = random.randint(0, len(self.path) - 1)
+            while i == j:
+                i = random.randint(0, len(self.path) - 1)
+        if j is None:
+            j =  random.randint(0, len(self.path) - 1)
+            while i == j:
+                j =  random.randint(0, len(self.path) - 1)
+        return (i,j)
+
+    def insert(self, i: int | None = None, j: int | None = None):
+        i,j = self.fixCityIndex(i,j)
         if i > j:
             i, j = j, i  # i is now always smaller than j
 
-        j_item = self.path.pop(j)
+        j_item: City = self.path.pop(j)
         self.path.insert(i, j_item)
 
         # print(f"Inserted city {j} to {i}\n")
 
-    # Scramble function doesn't work
     def scramble(self, i: int | None = None, j: int | None = None):
-        section = []
-        for _i in range(j-i):
+        i,j = self.fixCityIndex(i,j)
+        section: list[City] = []
+        for _ in range(j-i):
             section.append(self.path.pop(i))
+        
         while len(section) > 0:
-            rand = random.randint(0, len(section))
+            rand: int = random.randint(0, len(section)-1)
             self.path.insert(i, section.pop(rand))
 
         # print(f"Cities scrambled between {i} and {j}")
@@ -82,9 +93,9 @@ class Individual:
             print(f"City {i} ({city.id}): ({city.point.x}, {city.point.y})")
 
     # Generalised function to centralise the execution of a mutation
-    def performMutation(self, mutation_probability=0.05, mutation_type="swap"):
+    def performMutation(self, mutation_probability: float = 0.05, mutation_type: str = "swap") -> 'Individual':
         # Should a mutation occur
-        random_number = random.random()
+        random_number: float = random.random()
         if (random_number > mutation_probability):
             return self
 
