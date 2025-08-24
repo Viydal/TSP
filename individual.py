@@ -49,7 +49,7 @@ class Individual:
 
         # print(f"Inverted cities from {i} to {j}\n")
 
-    def fixCityIndex(self, i: int | None, j: int | None):
+    def fixCityIndex(self, i: int | None, j: int | None) -> tuple[int,int]:
         if i is None and j is None:
             i = random.randint(0, len(self.path) - 1)
             j = random.randint(0, len(self.path) - 1)
@@ -60,6 +60,7 @@ class Individual:
             while i == j:
                 i = random.randint(0, len(self.path) - 1)
         elif j is None:
+            j =  random.randint(0, len(self.path) - 1)
             while i == j:
                 j =  random.randint(0, len(self.path) - 1)
         return (i,j)
@@ -69,7 +70,7 @@ class Individual:
         if i > j:
             i, j = j, i  # i is now always smaller than j
 
-        j_item = self.path.pop(j)
+        j_item: tsp.City = self.path.pop(j)
         self.path.insert(i, j_item)
 
         # print(f"Inserted city {j} to {i}\n")
