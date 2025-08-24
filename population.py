@@ -4,6 +4,8 @@ import copy
 import math
 import time
 
+import individual
+
 
 class Population:
     def __init__(self, tsp, path_costs=None, size=50):
@@ -337,11 +339,11 @@ class Population:
         return nextGeneration
 
     # Fitness Proportional Selection
-    def fitness_proportionalSelection(self, PopulationPerRoll: int = 1, rolls: int = 3):
+    def fitness_proportionalSelection(self, PopulationPerRoll: int = 1, rolls: int = 3) -> list[individual.Individual]:
         self.sortPopulation()
-        newPopulation = []
-        totalFitnessSum = 0
-        fitness = [] # List of Fitness(cost) of each path
+        newPopulation: list[individual.Individual] = []
+        totalFitnessSum: int = 0
+        fitness: list[int] = [] # List of Fitness(cost) of each path
         for i in self.individuals:
             fitness.append(math.ceil(i.cost))
             totalFitnessSum += math.floor(i.cost)
@@ -352,8 +354,8 @@ class Population:
 
         # Loop for each Roll/Spin of the wheel
         for i in range(rolls):
-            rand = random.randint(0, totalFitnessSum)
-            WinningRolls = []
+            rand: int = random.randint(0, totalFitnessSum)
+            WinningRolls: list[float] = []
 
             # Add other evenly spaced individuals to newPopulation
 
@@ -365,8 +367,8 @@ class Population:
             
             #   Extend newPopulation from WinningRolls
             for indiv in WinningRolls:
-                sum = 0
-                index = 0
+                sum: int = 0
+                index: int = 0
                 while sum < indiv and index < len(fitness):
                     sum += fitness[index]
                     index += 1
