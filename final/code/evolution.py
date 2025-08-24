@@ -160,3 +160,91 @@ class Evolution:
             #     print(f"generation: {gen} - best path with cost: {round(global_best.cost, 2)} - replaced: {num_to_replace}/{population.size}")
 
         return global_best
+
+    # Inver-over
+    def inver_over(population, generationCount=20000, p=0.02, global_best=None):
+
+        if global_best is None:
+            global_best = copy.copy(population.getBest())
+        
+        for gen in range(generationCount):
+            pop_list = population.getPopulation()
+            new_population = []
+            
+            for ind in pop_list:
+                # Create copy of individual
+                S0 = copy.copy(ind)
+                S0.path = ind.path[:]  # Copy path
+                
+                # Select random starting city
+                c = random.choice(S0.path)
+                
+                while True:
+                    if random.random() < p:
+                        # Select random city other than c
+                        other_cities = [city for city in S0.path if city.id != c.id]
+                        c_prime = random.choice(other_cities)
+                    else:
+                        # Select random individual and get next city after c
+                        other_individual = random.choice(pop_list)
+                        # Find position of c in the other individual
+                        c_pos = next(i for i, city in enumerate(other_individual.path) if city.id == c.id)
+                        # Get next city
+                        next_pos = (c_pos + 1) % len(other_individual.path)
+                        c_prime = other_individual.path[next_pos]
+                    
+                    # Check if c' is next to c in S0
+                    c_pos_in_S0 = next(i for i, city in enumerate(S0.path) if city.id == c.id)
+                    n = len(S0.path)
+                    
+                    # Get previous and next cities of c in S0
+                    prev_city = S0.path[c_pos_in_S0 - 1]
+                    next_city = S0.path[(c_pos_in_S0 + 1) % n]
+                    
+                    # If c' is next to c, stop repeat loop
+                    if c_prime.id == prev_city.id or c_prime.id == next_city.id:
+                        break
+                    
+                    # Inverse section from next city of c to c'
+                    next_c_pos = (c_pos_in_S0 + 1) % n
+                    c_prime_pos = next(i for i, city in enumerate(S0.path) if city.id == c_prime.id)
+                    
+                    # Determine the segment to reverse
+                    start_pos = next_c_pos
+                    end_pos = c_prime_pos
+                    
+                    if start_pos <= end_pos:
+                        # Reverse from start to end
+                        S0.path[start_pos:end_pos + 1] = reversed(S0.path[start_pos:end_pos + 1])
+                    else:
+                        # Reverse the segment that wraps around
+                        segment = S0.path[start_pos:] + S0.path[:end_pos + 1]
+                        segment.reverse()
+                        S0.path[start_pos:] = segment[:len(S0.path) - start_pos]
+                        S0.path[:end_pos + 1] = segment[len(S0.path) - start_pos:]
+                    
+                    # Move to next city
+                    c = c_prime
+                
+                # Evaluate both individuals if needed
+                if not hasattr(ind, 'cost') or ind.cost is None:
+                    ind.evaluate()
+                
+                # Keep better individual
+                if S0.evaluate() <= ind.cost:
+                    new_population.append(S0)
+                else:
+                    new_population.append(ind)
+            
+            # Update population for next generation
+            population.updatePopulation(new_population)
+            
+            # Track best
+            current_best = population.getBest()
+            if current_best.cost < global_best.cost:
+                global_best = copy.copy(current_best)
+            
+            if gen % 100 == 0:
+                print(f"[Gen {gen}] Best cost: {global_best.cost}")
+        
+        return global_best
