@@ -12,7 +12,7 @@ class Population:
         self.tsp = tsp
         for i in range(size):
             self.individuals.append(Individual(tsp))
-            
+
         if previous_path_costs is None:
             self.path_costs = {}
         else:
@@ -22,13 +22,13 @@ class Population:
         """Returns the individual with the lowest cost."""
         if not self.individuals:
             return None
-           
+
         return min(self.individuals, key=lambda ind: ind.cost)
 
     def bestPathCost(self):
         best_cost = self.getBest()
         return best_cost
-    
+
     def efficient_evaluate(self, individual: Individual):
         key = tuple(individual.path)
         if key not in self.path_costs:
@@ -52,7 +52,7 @@ class Population:
             child1, child2 = self.cycleCrossover(parent1, parent2)
         else:
             print("Invalid crossover operation.")
-            
+
         self.efficient_evaluate(child1)
         self.efficient_evaluate(child2)
 
@@ -129,7 +129,7 @@ class Population:
 
         start = random.randint(0, path_length - 1)
         end = random.randint(start, path_length - 1)
-        
+
         # print(f"start: {start}")
         # print(f"end: {end}")
 
@@ -151,7 +151,7 @@ class Population:
                 findValue = parent1_ids[i]
                 index = parent2_ids.index(findValue)
                 # print(f"index: {index}")
-                
+
                 while index <= end and index >= start:
                     # print(f"index: {index}")
                     findValue = parent1_ids[index]
@@ -212,17 +212,17 @@ class Population:
 
     def cycleCrossover(self, parent1, parent2):
         path_length = len(parent1.path)
-        
+
         parent1_ids = [city.id for city in parent1.path]
         parent2_ids = [city.id for city in parent2.path]
-        
+
         child1_ids = [None] * path_length
         child2_ids = [None] * path_length
 
         # Child1 creation
         parent1Cycle = {}
         parent1CycleAvoid = {}
-        
+
         used = set()
         keep = True
         while len(used) < path_length:
@@ -248,7 +248,7 @@ class Population:
         for i in range(path_length):
             if child1_ids[i] is None:
                 child1_ids[i] = parent2_ids[i]
-        
+
         # Child2 creation
         parent2Cycle = {}
         parent2CycleAvoid = {}
@@ -309,8 +309,48 @@ class Population:
 
         child2_individual = Individual(self.tsp)
         child2_individual.path = individual2
-        
+
         return child1_individual, child2_individual
+
+    def edge_recombination(parent1, parent2):
+        # Build adjacency table
+        adjacency = {}
+
+        def add_edge(city, neighbor):
+            if city not in adjacency:
+                adjacency[city] = set()
+            adjacency[city].add(neighbor)
+
+        for p in (parent1, parent2):
+            for i in range(len(p)):
+                left = p[i - 1]
+                right = p[(i + 1) % len(p)]
+                add_edge(p[i], left)
+                add_edge(p[i], right)
+
+        # Randomly choose starting city
+        current = random.choice(parent1)
+        child = [current]
+
+        # Build route
+        while len(child) < len(parent1):
+            # Remove current from adjacency
+            for neighbors in adjacency.values():
+                neighbors.discard(current)
+
+            # Pick next city
+            if adjacency[current]:
+                next_city = min(adjacency[current],
+                                key=lambda c: len(adjacency[c]))
+            else:
+                # If no adjacency left, choose random unused city
+                unused = [c for c in parent1 if c not in child]
+                next_city = random.choice(unused)
+
+            child.append(next_city)
+            current = next_city
+
+        return child
 
     # Copy N individuals over to next generation and return the partially filled next generation
     def elitism(self, elite_percentage=0.1):
